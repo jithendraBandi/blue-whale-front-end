@@ -1,7 +1,16 @@
+import { Table } from "antd"
+import { categoriesTableColumns } from "../../utils/TableColumns"
 
-const Categories = () => {
+const Categories = ({
+    categoriesList,
+    categoryEdit,
+}) => {
   return (
-    <div>Categories</div>
+    <Table
+        columns={categoriesTableColumns({categoryEdit})}
+        dataSource={categoriesList}
+        pagination={false}
+    />
   )
 }
 

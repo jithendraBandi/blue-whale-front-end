@@ -7,7 +7,7 @@
     position: absolute;
     pointer-events: none;
     left: 12px;
-    top: 8px;
+    top: 4px;
     transition: 0.2s ease all;
   }
   
@@ -16,7 +16,7 @@
   }
   
   .as-label {
-    top: -8px;
+    top: -12px;
     font-size: 12px !important;
     background: white;
     padding: 0 4px;
