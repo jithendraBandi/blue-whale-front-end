@@ -1,7 +1,9 @@
+import { Table } from "antd"
+import { transactionTableColumns } from "../../utils/TableColumns"
 
 const Transactions = () => {
   return (
-    <div>Transactions</div>
+    <Table columns={transactionTableColumns} />
   )
 }
 

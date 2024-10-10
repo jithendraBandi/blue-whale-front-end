@@ -12,6 +12,7 @@ const CategoryModal = ({
   categoryRecord,
   setCategoryRecord,
   getCategoriesList,
+  getItemsList,
 }) => {
   const [categoryForm] = Form.useForm();
 
@@ -30,6 +31,7 @@ const CategoryModal = ({
     axios.post(SAVE_CATEGORY, {...values, name: values?.name?.trim()})
         .then(response => {
             getCategoriesList();
+            categoryRecord && getItemsList();
             handleCancel();
         })
         .catch(error => {});
