@@ -1,0 +1,25 @@
+.float-label {
+    position: relative;
+  }
+  
+  .label {
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 12px;
+    top: 8px;
+    transition: 0.2s ease all;
+  }
+  
+  .as-placeholder {
+    color: rgb(110, 129, 127);
+  }
+  
+  .as-label {
+    top: -8px;
+    font-size: 12px !important;
+    background: white;
+    padding: 0 4px;
+    margin-left: -4px;
+  }
+  
