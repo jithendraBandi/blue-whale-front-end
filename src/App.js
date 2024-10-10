@@ -1,7 +1,8 @@
+import BlueWhale from "./components/BlueWhale";
 
 const App = () => {
   return (
-    <div>App</div>
+    <BlueWhale />
   );
 }
 
