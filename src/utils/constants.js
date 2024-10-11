@@ -15,9 +15,9 @@ export const tradeTypes = {
 };
 
 export const quantityFilters = {
-    OK: "GREEN",
-    WARNING: "YELLOW",
-    ZERO: "RED",
+    GREEN: "GREEN",
+    YELLOW: "YELLOW",
+    RED: "RED",
 }
 
 export const successNotification = (message) => (

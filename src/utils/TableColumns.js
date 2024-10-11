@@ -65,14 +65,14 @@ export const itemsTableColumns = ({ itemEdit, getCategoryFilterList }) => [
     key: "quantity",
     sorter: (a, b) => a?.quantity - b?.quantity,
     filters: [
-      {text: quantityFilters.OK, value: quantityFilters.OK},
-      {text: quantityFilters.WARNING, value: quantityFilters.WARNING},
-      {text: quantityFilters.ZERO, value: quantityFilters.ZERO},
+      {text: quantityFilters.GREEN, value: quantityFilters.GREEN},
+      {text: quantityFilters.YELLOW, value: quantityFilters.YELLOW},
+      {text: quantityFilters.RED, value: quantityFilters.RED},
     ],
     onFilter: (value, record) => {
-      if (value === quantityFilters.ZERO) return record?.quantity === 0;
-      else if (value === quantityFilters.WARNING) return record?.quantity <= 9 && record?.quantity > 0;
-      else if (value === quantityFilters.OK) return record?.quantity >= 10;
+      if (value === quantityFilters.RED) return record?.quantity === 0;
+      else if (value === quantityFilters.YELLOW) return record?.quantity <= 9 && record?.quantity > 0;
+      else if (value === quantityFilters.GREEN) return record?.quantity >= 10;
       return false;
     }
   },
