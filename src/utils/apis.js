@@ -10,4 +10,4 @@ export const SAVE_ITEM = BASE_URL + "/item/save";
 
 // Transaction --------------------------
 export const GET_ALL_TRANSACTIONS = BASE_URL + "/transactions/get";
-export const CREATE_TRANSACTION = BASE_URL + "/transactions/save";
+export const SAVE_TRANSACTION = BASE_URL + "/transactions/save";

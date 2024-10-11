@@ -1,0 +1,1 @@
+export const antdTableScrollYaxis = {y: "73vh"};

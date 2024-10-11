@@ -16,22 +16,6 @@ const BlueWhale = () => {
   const [categoriesList, setCategoriesList] = useState([]);
   const [transactionsList, setTransactionsList] = useState([]);
   
-  const [transactionModal, setTransactionModal] = useState(false);
-  const [transactionRecord, setTransactionRecord] = useState(null);
-  const transactionEdit = (record) => {
-    setTransactionModal(true);
-    setTransactionRecord(record);
-  }
-//   {transactionModal && (
-//     <TransactionModal 
-//         transactionModal={transactionModal}
-//         setTransactionModal={setTransactionModal}
-//         transactionRecord={transactionRecord}
-//         setTransactionRecord={setTransactionRecord}
-//         // getTransactionsList={getTransactionsList}
-//     />
-//   )}
-  
   const [maintenanceModal, setMaintenanceModal] = useState(false);
   const [maintenanceRecord, setMaintenanceRecord] = useState(null);
   const maintenanceEdit = (record) => {
@@ -78,7 +62,6 @@ const BlueWhale = () => {
         })
         .catch(error => {});
   }
-  console.log('transactionsList', transactionsList)
 
 
   return (
@@ -118,7 +101,14 @@ const BlueWhale = () => {
         />
       )}
 
-      {activeTabView === headerTabViews.TRANSACTIONS && <Transactions />}
+      {activeTabView === headerTabViews.TRANSACTIONS && (
+        <Transactions 
+          transactionsList={transactionsList}
+          getTransactionsList={getTransactionsList}
+          getItemsList={getItemsList}
+          itemsList={itemsList}
+        />
+      )}
       
       {activeTabView === headerTabViews.MAINTENANCE && <Maintencance />}
     </>

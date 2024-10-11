@@ -1,12 +1,21 @@
 .header {
-    position: sticky;
-    top: 0;
-    background-color: #f1f1f1;
-    padding-left: 10px;
-    padding-right: 10px;
-    border: 1px solid #ddd;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 100;
-  }
+  position: sticky;
+  top: 0;
+  background-color: #f1f1f1;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+.item-quantity-zero {
+  background-color: #f8d7da !important;
+}
+.item-quantity-warning {
+  background-color: #fff3cd !important;
+}
+.item-quantity-ok {
+  background-color: #d4edda !important;
+}

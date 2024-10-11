@@ -17,6 +17,7 @@ const CategoryModal = ({
   const [categoryForm] = Form.useForm();
 
   useEffect(() => {
+    if (!categoryRecord) return;
     categoryForm.setFieldsValue({
         id: categoryRecord?.id,
         name: categoryRecord?.name,

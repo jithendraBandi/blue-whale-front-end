@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Input } from "antd";
 import "./index.css";
 import TextArea from "antd/es/input/TextArea";
+import { inputPassedKeys } from "./constants";
 const FloatInput = (props) => {
   const [focus, setFocus] = useState(false);
   let { label, value, placeholder, type } = props;
@@ -17,7 +18,7 @@ const FloatInput = (props) => {
 
 
   const handleNumber = (event) => {
-    if (event.key === "Backspace" || event.key === "Tab") {
+    if (inputPassedKeys.includes(event.key)) {
       return;
     }
     if (!numberRegex.test(event.key)) {
@@ -48,6 +49,7 @@ const FloatInput = (props) => {
       {type === "text" && (<Input {...props} defaultValue={value} type={type} />)}
       {type === "number" && (<Input {...props} defaultValue={value} type="text" onKeyDown={handleNumber} />)}
       {type === "float" && (<Input {...props} defaultValue={value} type="text" onKeyDown={handleFloatNumber} />)}
+      {type === "search" && <Input {...props} defaultValue={value} type="search" />}
       {type === "text-area" && (<TextArea style={{height: "80px"}} defaultValue={value} {...props} />)}
       
       <label className={labelClass}>{isOccupied ? label : placeholder}</label>

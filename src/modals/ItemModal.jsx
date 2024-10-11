@@ -4,7 +4,7 @@ import FormButtons from "../utils/FormButtons";
 import FloatInput from "../utils/FloatInput";
 import FloatSelect from "../utils/FloatSelect"
 import axios from "axios";
-import { SAVE_CATEGORY, SAVE_ITEM } from "../utils/apis";
+import { SAVE_ITEM } from "../utils/apis";
 import { errorNotification } from "../utils/constants";
 
 const ItemModal = ({
@@ -18,6 +18,7 @@ const ItemModal = ({
   const [itemForm] = Form.useForm();
 
     useEffect(() => {
+      if (!itemRecord) return;
       itemForm.setFieldsValue({
           id: itemRecord?.id,
           name: itemRecord?.name,
@@ -57,8 +58,8 @@ const ItemModal = ({
     >
       <Form name="itemForm" form={itemForm} onFinish={onFinish}>
         <Row
-          style={{ marginTop: "20px" }}
           gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+          style={{marginTop:"20px"}}
         >
           <Col className="gutter-row" span={6}>
             <Form.Item name="id">

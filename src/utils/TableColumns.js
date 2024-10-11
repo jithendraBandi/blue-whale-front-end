@@ -1,5 +1,6 @@
 import { EditOutlined } from "@ant-design/icons";
 import { Button, Space } from "antd";
+import { quantityFilters } from "./constants";
 
 export const categoriesTableColumns = ({ categoryEdit }) => [
   {
@@ -31,7 +32,7 @@ export const categoriesTableColumns = ({ categoryEdit }) => [
   },
 ];
 
-export const itemsTableColumns = ({itemEdit}) => [
+export const itemsTableColumns = ({ itemEdit, getCategoryFilterList }) => [
   {
     title: "Id",
     dataIndex: "id",
@@ -42,7 +43,9 @@ export const itemsTableColumns = ({itemEdit}) => [
     title: "Category",
     key: "categoryId",
     sorter: (a, b) => a?.category?.name?.localeCompare(b?.category?.name),
-    render: (_, record) => <p>{record?.category?.name}</p>
+    render: (_, record) => <p>{record?.category?.name}</p>,
+    filters: getCategoryFilterList(),
+    onFilter: (value, record) => record?.categoryId === value,
   },
   {
     title: "Item",
@@ -61,6 +64,17 @@ export const itemsTableColumns = ({itemEdit}) => [
     dataIndex: "quantity",
     key: "quantity",
     sorter: (a, b) => a?.quantity - b?.quantity,
+    filters: [
+      {text: quantityFilters.OK, value: quantityFilters.OK},
+      {text: quantityFilters.WARNING, value: quantityFilters.WARNING},
+      {text: quantityFilters.ZERO, value: quantityFilters.ZERO},
+    ],
+    onFilter: (value, record) => {
+      if (value === quantityFilters.ZERO) return record?.quantity === 0;
+      else if (value === quantityFilters.WARNING) return record?.quantity <= 9 && record?.quantity > 0;
+      else if (value === quantityFilters.OK) return record?.quantity >= 10;
+      return false;
+    }
   },
   {
     title: "Price",
@@ -85,70 +99,73 @@ export const itemsTableColumns = ({itemEdit}) => [
   },
 ];
 
-export const transactionTableColumns = [
-    // {
-    //     title: "Id",
-    //     dataIndex: "id",
-    //     key: "id",
-    //     sorter: (a, b) => a?.id - b?.id,
-    //   },
-    // {
-    //     title: "Name",
-    //     dataIndex: "id",
-    //     key: "id",
-    //     sorter: (a, b) => a?.id - b?.id,
-    //   },
-    // {
-    //     title: "Phone Number",
-    //     dataIndex: "id",
-    //     key: "id",
-    //     sorter: (a, b) => a?.id - b?.id,
-    //   },
-    //   {
-    //     title: "Date",
-    //     dataIndex: "id",
-    //     key: "id",
-    //     sorter: (a, b) => a?.id - b?.id,
-    //   },
-    //   {
-    //     title: "Address",
-    //     dataIndex: "id",
-    //     key: "id",
-    //     sorter: (a, b) => a?.id - b?.id,
-    //   },
-    //   {
-    //     title: "Sell/Buy",
-    //     dataIndex: "id",
-    //     key: "id",
-    //     sorter: (a, b) => a?.id - b?.id,
-    //   },
-    //   {
-    //     title: "Total Price",
-    //     dataIndex: "id",
-    //     key: "id",
-    //     sorter: (a, b) => a?.id - b?.id,
-    //   },
-    //   {
-    //     title: "List Of each Item (itemName,qunaity,price)",
-    //     dataIndex: "id",
-    //     key: "id",
-    //     sorter: (a, b) => a?.id - b?.id,
-    //   },
-    //   {
-    //     title: "Action",
-    //     key: "action",
-    //     render: (_, record) => (
-    //       <Space size="middle">
-    //         <Button 
-    //         // onClick={() => itemEdit(record)}
-    //         >
-    //           <EditOutlined style={{ color: "blue" }} />
-    //         </Button>
-    //         {/* <DeleteOutlined
-    //           style={{ color: "red" }}
-    //           onClick={() => deleteProfile(record)}
-    //         /> */}
-    //       </Space>
-    //     ),
-    //   },
+export const transactionTableColumns = ({ transactionEdit }) => [
+  {
+    title: "Id",
+    dataIndex: "id",
+    key: "id",
+    sorter: (a, b) => a?.id - b?.id,
+  },
+  {
+    title: "Name",
+    dataIndex: "name",
+    key: "name",
+    sorter: (a, b) => a?.name?.localeCompare(b?.name),
+  },
+  {
+    title: "Date",
+    dataIndex: "date",
+    key: "date",
+  },
+  {
+    title: "Mobile Number",
+    dataIndex: "mobileNumber",
+    key: "mobileNumber",
+  },
+  {
+    title: "Address",
+    dataIndex: "address",
+    key: "address",
+  },
+  {
+    title: "Amount",
+    dataIndex: "amount",
+    key: "amount",
+    sorter: (a, b) => a?.amount - b?.amount,
+  },
+  {
+    title: "Action",
+    key: "action",
+    render: (_, record) => (
+      <Space size="middle">
+        <Button onClick={() => transactionEdit(record)}>
+          <EditOutlined style={{ color: "blue" }} />
+        </Button>
+      </Space>
+    ),
+  },
+];
+
+export const transactionItemsDetailsTableColumns = () => [
+  {
+    title: "Item Id",
+    dataIndex: "itemId",
+    key: "itemId",
+  },
+  {
+    title: "Item Name",
+    dataIndex: "itemName",
+    key: "itemName",
+  },
+  {
+    title: "Quantity",
+    dataIndex: "quantity",
+    key: "quantity",
+  },
+  {
+    title: "Cost",
+    dataIndex: "cost",
+    key: "cost",
+    sorter: (a, b) => a?.cost - b?.cost,
+  },
 ];

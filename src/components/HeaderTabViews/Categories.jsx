@@ -3,6 +3,7 @@ import { categoriesTableColumns } from "../../utils/TableColumns";
 import { useState } from "react";
 import CategoryModal from "../../modals/CategoryModal";
 import PlusOutlinedButton from "../../utils/PlusOutlinedButton";
+import { antdTableScrollYaxis } from "../../utils/styles";
 
 const Categories = ({ categoriesList, getCategoriesList, getItemsList }) => {
   const [categoryRecord, setCategoryRecord] = useState(null);
@@ -20,6 +21,7 @@ const Categories = ({ categoriesList, getCategoriesList, getItemsList }) => {
         columns={categoriesTableColumns({ categoryEdit })}
         dataSource={categoriesList}
         rowKey="id"
+        scroll={antdTableScrollYaxis}
         pagination={false}
       />
       {categoryModal && (
