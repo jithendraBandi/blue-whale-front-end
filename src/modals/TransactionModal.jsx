@@ -101,7 +101,7 @@ const TransactionModal = ({
 
     let payload = {
       date: transactionDate,
-      name: values?.name,
+      name: values?.name?.trim(),
       mobileNumber: values?.mobileNumber,
       address: values?.address,
       amount,
@@ -205,7 +205,7 @@ const TransactionModal = ({
       centered
       footer={null}
     >
-      <Form name="itemForm" form={transactionForm} onFinish={confirmModal}>
+      <Form name="transactionForm" form={transactionForm} onFinish={confirmModal}>
         <Row
           gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
           className="first-row-margin-top"

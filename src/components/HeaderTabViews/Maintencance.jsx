@@ -1,8 +1,88 @@
+import { useState } from "react";
+import FloatInput from "../../utils/FloatInput";
+import PlusOutlinedButton from "../../utils/PlusOutlinedButton";
+import { Modal, Table } from "antd";
+import MaintenanceModal from "../../modals/MaintenanceModal";
+import { ACTION_SUCCESSFULL_MESSAGE, UNDONE_WARNING_MESSAGE, UNEXPECTED_ERROR_MESSAGE } from "../../utils/stringConstants";
+import axios from "axios";
+import { DELETE_MAINTENANCE } from "../../utils/apis";
+import { errorNotification, successNotification } from "../../utils/constants";
+import { maintenanceTableColumns } from "../../utils/TableColumns";
 
-const Maintencance = () => {
+const Maintencance = ({ maintenanceList, getMaintenanceList, itemsList, }) => {
+  const [maintenanceModal, setMaintenanceModal] = useState(false);
+  const [maintenanceDateSearch, setMaintenanceDateSearch] = useState("");
+  const [maintenanceRecord, setMaintenanceRecord] = useState(null);
+
+  const maintenanceEdit = (record) => {
+    setMaintenanceModal(true);
+    setMaintenanceRecord(record);
+  };
+
+  const deleteMaintenance = (record) => {
+    Modal.confirm({
+      title: "Delete Maintenance",
+      content: UNDONE_WARNING_MESSAGE,
+      okText: "Yes",
+      cancelText: "No",
+      onOk: () => {
+        axios
+          .delete(DELETE_MAINTENANCE.replace("{maintenanceId}", record?.id))
+          .then((response) => {
+            getMaintenanceList();
+            successNotification(
+              response?.data?.data || ACTION_SUCCESSFULL_MESSAGE
+            );
+          })
+          .catch((error) => {
+            errorNotification(
+              error?.response?.data?.message || UNEXPECTED_ERROR_MESSAGE
+            );
+          });
+      },
+    });
+  };
+
+
+  const filteredMaintenanceList = () =>
+    maintenanceList?.filter((maintenance) =>
+      maintenance?.date
+        .toLowerCase()
+        ?.includes(maintenanceDateSearch?.toLowerCase())
+    );
+
   return (
-    <div>Maintencance</div>
-  )
-}
+    <>
+      <div className="space-between side-margins">
+        <FloatInput
+          onChange={(event) => setMaintenanceDateSearch(event.target.value)}
+          value={maintenanceDateSearch}
+          type="search"
+          label="Search Date..."
+        />
+        <PlusOutlinedButton setModal={setMaintenanceModal} />
+      </div>
+      <Table
+        columns={maintenanceTableColumns({
+          maintenanceEdit,
+          deleteMaintenance,
+        })}
+        dataSource={filteredMaintenanceList()}
+        rowKey="id"
+        pagination={false}
+      />
+      {maintenanceModal && (
+        <MaintenanceModal
+          maintenanceModal={maintenanceModal}
+          setMaintenanceModal={setMaintenanceModal}
+          maintenanceRecord={maintenanceRecord}
+          setMaintenanceRecord={setMaintenanceRecord}
+          getMaintenanceList={getMaintenanceList}
+          itemsList={itemsList}
+        />
+      )}
+    </>
+  );
+};
 
-export default Maintencance
+export default Maintencance;

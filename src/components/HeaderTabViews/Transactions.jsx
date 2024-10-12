@@ -6,10 +6,19 @@ import {
 import { useState } from "react";
 import PlusOutlinedButton from "../../utils/PlusOutlinedButton";
 import TransactionModal from "../../modals/TransactionModal";
-import { errorNotification, successNotification, tradeTypes } from "../../utils/constants";
+import {
+  errorNotification,
+  successNotification,
+  tradeTypes,
+} from "../../utils/constants";
 import axios from "axios";
 import { DELETE_TRANSACTION } from "../../utils/apis";
-import { ACTION_SUCCESSFULL_MESSAGE, UNDONE_WARNING_MESSAGE, UNEXPECTED_ERROR_MESSAGE } from "../../utils/stringConstants";
+import {
+  ACTION_SUCCESSFULL_MESSAGE,
+  UNDONE_WARNING_MESSAGE,
+  UNEXPECTED_ERROR_MESSAGE,
+} from "../../utils/stringConstants";
+import FloatInput from "../../utils/FloatInput";
 
 const Transactions = ({
   getTransactionsList,
@@ -20,8 +29,16 @@ const Transactions = ({
   const [transactionModal, setTransactionModal] = useState(false);
   // const [transactionRecord, setTransactionRecord] = useState(null);
   const [tradeType, setTradeType] = useState(tradeTypes.SELL);
+  const [transactionDateSearch, setTransactionDateSearch] = useState("");
 
-  const filteredTransactionList = () => transactionsList?.filter(transaction => transaction?.tradeType === tradeType);
+  const filteredTransactionList = () =>
+    transactionsList?.filter(
+      (transaction) =>
+        transaction?.tradeType === tradeType &&
+        transaction?.date
+          .toLowerCase()
+          ?.includes(transactionDateSearch?.toLowerCase())
+    );
 
   // const transactionEdit = (record) => {
   //   setTransactionModal(true);
@@ -35,14 +52,19 @@ const Transactions = ({
       okText: "Yes",
       cancelText: "No",
       onOk: () => {
-        axios.delete(DELETE_TRANSACTION.replace("{transactionId}", record?.id))
-          .then(response => {
+        axios
+          .delete(DELETE_TRANSACTION.replace("{transactionId}", record?.id))
+          .then((response) => {
             getItemsList();
             getTransactionsList();
-            successNotification(response?.data?.data || ACTION_SUCCESSFULL_MESSAGE);
+            successNotification(
+              response?.data?.data || ACTION_SUCCESSFULL_MESSAGE
+            );
           })
-          .catch(error => {
-            errorNotification(error?.response?.data?.message || UNEXPECTED_ERROR_MESSAGE);
+          .catch((error) => {
+            errorNotification(
+              error?.response?.data?.message || UNEXPECTED_ERROR_MESSAGE
+            );
           });
       },
     });
@@ -51,6 +73,12 @@ const Transactions = ({
   return (
     <>
       <div className="space-between side-margins">
+        <FloatInput
+          onChange={(event) => setTransactionDateSearch(event.target.value)}
+          value={transactionDateSearch}
+          type="search"
+          label="Search Date..."
+        />
         <Radio.Group
           onChange={(event) => setTradeType(event.target.value)}
           value={tradeType}

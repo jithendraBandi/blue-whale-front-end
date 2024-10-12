@@ -32,7 +32,7 @@ const Items = ({ itemsList, getItemsList, categoriesList }) => {
     }));
   };
   const rowClassName = (record) => {
-    if (record?.quantity === 0) return "item-quantity-zero";
+    if (record?.quantity <= 0) return "item-quantity-zero";
     else if (record?.quantity < 10) return "item-quantity-warning";
     else return "item-quantity-ok";
   };
@@ -60,7 +60,6 @@ const Items = ({ itemsList, getItemsList, categoriesList }) => {
     <>
       <div className="space-between side-margins">
         <FloatInput
-          // allowClear
           onChange={(event) => setItemSearch(event.target.value)}
           value={itemSearch}
           type="search"

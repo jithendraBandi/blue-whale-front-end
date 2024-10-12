@@ -14,3 +14,8 @@ export const DELETE_ITEM = BASE_URL + "/item/{itemId}/delete"
 export const GET_ALL_TRANSACTIONS = BASE_URL + "/transactions/get";
 export const SAVE_TRANSACTION = BASE_URL + "/transactions/save";
 export const DELETE_TRANSACTION = BASE_URL + "/transactions/{transactionId}/delete";
+
+// Maintenance ----------------------------
+export const GET_ALL_MAINTENANCE = BASE_URL + "/maintenance/get"
+export const SAVE_MAINTENANCE = BASE_URL + "/maintenance/save"
+export const DELETE_MAINTENANCE = BASE_URL + "/maintenance/{maintenanceId}/delete"

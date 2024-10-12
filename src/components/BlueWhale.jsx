@@ -5,7 +5,7 @@ import { headerTabViews } from "../utils/constants";
 import Items from "./HeaderTabViews/Items";
 import Categories from "./HeaderTabViews/Categories";
 import Transactions from "./HeaderTabViews/Transactions";
-import { GET_ALL_ITEMS, GET_ALL_TRANSACTIONS, GET_CATEGORIES } from "../utils/apis";
+import { GET_ALL_ITEMS, GET_ALL_MAINTENANCE, GET_ALL_TRANSACTIONS, GET_CATEGORIES } from "../utils/apis";
 import axios from "axios";
 import Maintencance from "./HeaderTabViews/Maintencance";
 
@@ -14,29 +14,14 @@ const BlueWhale = () => {
 
   const [itemsList, setItemsList] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
-  const [transactionsList, setTransactionsList] = useState([]);
-  
-  const [maintenanceModal, setMaintenanceModal] = useState(false);
-  const [maintenanceRecord, setMaintenanceRecord] = useState(null);
-  const maintenanceEdit = (record) => {
-    setMaintenanceModal(true);
-    setMaintenanceRecord(record)
-  }
-//   {maintenanceModal && (
-//     <MaintenanceModal 
-//         maintenanceModal={maintenanceModal}
-//         setMaintenanceModal={setMaintenanceModal}
-//         maintenanceRecord={maintenanceRecord}
-//         setMaintenanceRecord={setMaintenanceRecord}
-//         // getMaintenanceList={getMaintenanceList}
-//     />
-//   )}
-  
+  const [transactionsList, setTransactionsList] = useState([]);  
+  const [maintenanceList, setMaintenanceList] = useState([]);
 
   useEffect(() => {
     getItemsList();
     getCategoriesList();
     getTransactionsList();
+    getMaintenanceList();
   }, []);
 
   const getItemsList = () => {
@@ -63,11 +48,19 @@ const BlueWhale = () => {
         .catch(error => {});
   }
 
+  const getMaintenanceList = () => {
+    axios.get(GET_ALL_MAINTENANCE)
+        .then(response => {
+            setMaintenanceList(response?.data?.data);
+        })
+        .catch(error => {});
+  }
+
 
   return (
     <>
       <div className="header">
-        <h3 style={{ color: "blue" }}>Blue Whale Aqua Solutions</h3>
+        <h3 className="blue-color">Blue Whale Aqua Solutions</h3>
         <Radio.Group
           onChange={(event) => setActiveTabView(event.target.value)}
           value={activeTabView}
@@ -110,7 +103,13 @@ const BlueWhale = () => {
         />
       )}
       
-      {activeTabView === headerTabViews.MAINTENANCE && <Maintencance />}
+      {activeTabView === headerTabViews.MAINTENANCE && (
+        <Maintencance 
+          maintenanceList={maintenanceList}
+          getMaintenanceList={getMaintenanceList}
+          itemsList={itemsList}
+        />
+      )}
     </>
   );
 };

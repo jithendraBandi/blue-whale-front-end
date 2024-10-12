@@ -11,7 +11,6 @@ export const categoriesTableColumns = ({ categoryEdit, deleteCategory }) => [
     title: "Category",
     dataIndex: "name",
     key: "name",
-    sorter: (a, b) => a?.name?.localeCompare(b?.name),
   },
   {
     title: "Action",
@@ -37,7 +36,6 @@ export const itemsTableColumns = ({ itemEdit, getCategoryFilterList, deleteItem 
   {
     title: "Category",
     key: "categoryId",
-    sorter: (a, b) => a?.category?.name?.localeCompare(b?.category?.name),
     render: (_, record) => <p>{record?.category?.name}</p>,
     filters: getCategoryFilterList(),
     onFilter: (value, record) => record?.categoryId === value,
@@ -46,13 +44,11 @@ export const itemsTableColumns = ({ itemEdit, getCategoryFilterList, deleteItem 
     title: "Item",
     dataIndex: "name",
     key: "name",
-    sorter: (a, b) => a?.name?.localeCompare(b?.name),
   },
   {
     title: "Company",
     dataIndex: "company",
     key: "company",
-    sorter: (a, b) => a?.company?.localeCompare(b?.company),
   },
   {
     title: "Quantity",
@@ -174,5 +170,52 @@ export const transactionItemsDetailsTableColumns = () => [
   {
     title: "Price",
     render: (_, record) => record?.quantity * record?.cost,
+  },
+];
+
+export const maintenanceTableColumns = ({maintenanceEdit, deleteMaintenance}) => [
+  {
+    title: "S.No",
+    render: (_, record, index) => index + 1,
+  },
+  {
+    title: "Name",
+    dataIndex: "name",
+    key: "name",
+    sorter: (a, b) => a?.name?.localeCompare(b?.name),
+  },
+  {
+    title: "Date",
+    dataIndex: "date",
+    key: "date",
+  },
+  {
+    title: "Mobile Number",
+    dataIndex: "mobileNumber",
+    key: "mobileNumber",
+  },
+  {
+    title: "Address",
+    dataIndex: "address",
+    key: "address",
+  },
+  {
+    title: "Comment",
+    dataIndex: "comment",
+    key: "comment",
+  },
+  {
+    title: "Action",
+    key: "action",
+    render: (_, record) => (
+      <Space size="middle">
+        <Button onClick={() => maintenanceEdit(record)}>
+          <EditOutlined style={{ color: "blue" }} />
+        </Button>
+        <Button onClick={() => deleteMaintenance(record)}>
+          <DeleteOutlined className="red-color" />
+        </Button>
+      </Space>
+    ),
   },
 ];

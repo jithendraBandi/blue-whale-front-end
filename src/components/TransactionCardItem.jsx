@@ -35,7 +35,7 @@ const TransactionCardItem = ({
               }}>
                 {itemsList?.map((item) => (
                   <Select.Option key={item?.id} value={`${item?.id}_${item?.name}_${item?.price}_${item?.category?.name}_${index}`}>
-                    {item?.name} ({item?.price}/-) {item?.category?.name}
+                    {item?.category?.name} - {item?.name} (Rs.{item?.price}/-)
                   </Select.Option>
                 ))}
               </FloatSelect>
@@ -64,7 +64,7 @@ const TransactionCardItem = ({
               name={`cost_${index}`}
               rules={[{ required: true, message: "" }]}
             >
-              <FloatInput onChange={getItemTotal} type="number" label="Cost (per piece)" />
+              <FloatInput onChange={getItemTotal} type="number" label="Cost (per unit)" />
             </Form.Item>
           </Col>
         </Row>
