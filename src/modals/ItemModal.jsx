@@ -5,7 +5,8 @@ import FloatInput from "../utils/FloatInput";
 import FloatSelect from "../utils/FloatSelect"
 import axios from "axios";
 import { SAVE_ITEM } from "../utils/apis";
-import { errorNotification } from "../utils/constants";
+import { errorNotification, successNotification } from "../utils/constants";
+import { ACTION_SUCCESSFULL_MESSAGE, UNEXPECTED_ERROR_MESSAGE } from "../utils/stringConstants";
 
 const ItemModal = ({
   itemModal,
@@ -39,8 +40,11 @@ const ItemModal = ({
         .then(response => {
             getItemsList();
             handleCancel();
+            successNotification(response?.data?.data || ACTION_SUCCESSFULL_MESSAGE);
         })
-        .catch(error => {});
+        .catch(error => {
+          errorNotification(error?.response?.data?.message || UNEXPECTED_ERROR_MESSAGE);
+        });
   };
 
   const handleCancel = () => {

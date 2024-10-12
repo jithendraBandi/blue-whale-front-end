@@ -1,4 +1,4 @@
-import { Radio, Table } from "antd";
+import { Modal, Radio, Table } from "antd";
 import {
   transactionItemsDetailsTableColumns,
   transactionTableColumns,
@@ -6,8 +6,10 @@ import {
 import { useState } from "react";
 import PlusOutlinedButton from "../../utils/PlusOutlinedButton";
 import TransactionModal from "../../modals/TransactionModal";
-import { tradeTypes } from "../../utils/constants";
-import { antdTableScrollYaxis } from "../../utils/styles";
+import { errorNotification, successNotification, tradeTypes } from "../../utils/constants";
+import axios from "axios";
+import { DELETE_TRANSACTION } from "../../utils/apis";
+import { ACTION_SUCCESSFULL_MESSAGE, UNDONE_WARNING_MESSAGE, UNEXPECTED_ERROR_MESSAGE } from "../../utils/stringConstants";
 
 const Transactions = ({
   getTransactionsList,
@@ -16,15 +18,36 @@ const Transactions = ({
   itemsList,
 }) => {
   const [transactionModal, setTransactionModal] = useState(false);
-  const [transactionRecord, setTransactionRecord] = useState(null);
+  // const [transactionRecord, setTransactionRecord] = useState(null);
   const [tradeType, setTradeType] = useState(tradeTypes.SELL);
 
   const filteredTransactionList = () => transactionsList?.filter(transaction => transaction?.tradeType === tradeType);
 
-  const transactionEdit = (record) => {
-    setTransactionModal(true);
-    setTransactionRecord(record);
+  // const transactionEdit = (record) => {
+  //   setTransactionModal(true);
+  //   // setTransactionRecord(record);
+  // };
+
+  const deleteTransaction = (record) => {
+    Modal.confirm({
+      title: "Delete Transaction",
+      content: UNDONE_WARNING_MESSAGE,
+      okText: "Yes",
+      cancelText: "No",
+      onOk: () => {
+        axios.delete(DELETE_TRANSACTION.replace("{transactionId}", record?.id))
+          .then(response => {
+            getItemsList();
+            getTransactionsList();
+            successNotification(response?.data?.data || ACTION_SUCCESSFULL_MESSAGE);
+          })
+          .catch(error => {
+            errorNotification(error?.response?.data?.message || UNEXPECTED_ERROR_MESSAGE);
+          });
+      },
+    });
   };
+
   return (
     <>
       <div className="space-between side-margins">
@@ -38,7 +61,10 @@ const Transactions = ({
         <PlusOutlinedButton setModal={setTransactionModal} />
       </div>
       <Table
-        columns={transactionTableColumns({ transactionEdit })}
+        columns={transactionTableColumns({
+          // transactionEdit,
+          deleteTransaction,
+        })}
         dataSource={filteredTransactionList()}
         rowKey="id"
         pagination={false}
@@ -49,7 +75,6 @@ const Transactions = ({
               dataSource={record?.transactionItemDetails}
               rowKey="itemId"
               pagination={false}
-              scroll={antdTableScrollYaxis}
             />
           ),
           rowExpandable: (record) => record?.transactionItemDetails?.length > 0,
@@ -59,8 +84,8 @@ const Transactions = ({
         <TransactionModal
           transactionModal={transactionModal}
           setTransactionModal={setTransactionModal}
-          transactionRecord={transactionRecord}
-          setTransactionRecord={setTransactionRecord}
+          // transactionRecord={transactionRecord}
+          // setTransactionRecord={setTransactionRecord}
           itemsList={itemsList}
           getTransactionsList={getTransactionsList}
           getItemsList={getItemsList}

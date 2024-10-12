@@ -15,7 +15,7 @@ code {
 /* Ant Design Styles */
 .ant-table-wrapper .ant-table-thead > tr > th, .ant-table-wrapper .ant-table-thead > tr > th:hover {
   color: rgb(251, 251, 251);
-  text-align: center;
+  /* text-align: center; */
   background: rgb(128, 179, 204) !important;
 }
 .ant-table-row:nth-child(odd) {
@@ -54,4 +54,12 @@ code {
 }
 .first-row-margin-top {
   margin-top: 20px;
+}
+
+/* Colors */
+.red-color {
+  color: red;
+}
+.green-color {
+  color: green;
 }

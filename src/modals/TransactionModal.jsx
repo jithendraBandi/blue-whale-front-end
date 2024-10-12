@@ -1,6 +1,6 @@
 import { Button, Col, DatePicker, Form, Modal, Row, Select } from "antd";
 import { useEffect, useState } from "react";
-import { errorNotification, tradeTypes } from "../utils/constants";
+import { errorNotification, successNotification, tradeTypes } from "../utils/constants";
 import axios from "axios";
 import { SAVE_TRANSACTION } from "../utils/apis";
 import FloatInput from "../utils/FloatInput";
@@ -8,13 +8,15 @@ import FormButtons from "../utils/FormButtons";
 import dayjs from "dayjs";
 import FloatSelect from "../utils/FloatSelect";
 import "./modals.css";
-import { CloseCircleFilled, PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
+import TransactionCardItem from "../components/TransactionCardItem";
+import { ACTION_SUCCESSFULL_MESSAGE, UNEXPECTED_ERROR_MESSAGE } from "../utils/stringConstants";
 
 const TransactionModal = ({
   transactionModal,
   setTransactionModal,
-  transactionRecord,
-  setTransactionRecord,
+  // transactionRecord,
+  // setTransactionRecord,
   itemsList,
   getTransactionsList,
   getItemsList,
@@ -23,45 +25,51 @@ const TransactionModal = ({
 }) => {
   const [transactionForm] = Form.useForm();
   const [transactionItemsList, setTransactionItemsList] = useState([0]);
+  const [itemTotal, setItemTotal] = useState({});
 
   useEffect(() => {
-    if (!transactionRecord) {
-        transactionForm.setFieldValue("tradeType", activeTab);
-        return;
-    }
-    if (transactionRecord?.date && transactionRecord?.date !== "") {
-      const transactionDate = dayjs(transactionRecord?.date, "DD-MM-YYYY");
-      transactionForm.setFieldValue("date", transactionDate);
-    }
-    let transactionItemsList = [];
-    transactionRecord?.transactionItemDetails?.forEach((itemDetails, index) => {
-      transactionItemsList.push(index);
-      transactionForm.setFieldValue(`itemName_${index}`, itemDetails?.itemName);
-      transactionForm.setFieldValue(`quantity_${index}`, itemDetails?.quantity);
-      transactionForm.setFieldValue(`cost_${index}`, itemDetails?.cost);
-    });
-    setTransactionItemsList(transactionItemsList);
+    transactionForm.setFieldValue("tradeType", activeTab);
+  }, [activeTab, transactionForm])
 
-    transactionForm.setFieldsValue({
-      id: transactionRecord?.id,
-      name: transactionRecord?.name,
-      mobileNumber: transactionRecord?.mobileNumber,
-      address: transactionRecord?.address,
-      tradeType: transactionRecord?.tradeType,
-    });
-  }, [transactionRecord, transactionForm]);
+  // useEffect(() => {
+  //   if (!transactionRecord) {
+  //       transactionForm.setFieldValue("tradeType", activeTab);
+  //       return;
+  //   }
+  //   if (transactionRecord?.date && transactionRecord?.date !== "") {
+  //     const transactionDate = dayjs(transactionRecord?.date, "DD-MM-YYYY");
+  //     transactionForm.setFieldValue("date", transactionDate);
+  //   }
+  //   let transactionItemsList = [];
+  //   transactionRecord?.transactionItemDetails?.forEach((itemDetails, index) => {
+  //     transactionItemsList.push(index);
+  //     transactionForm.setFieldValue(`itemName_${index}`, itemDetails?.itemName);
+  //     transactionForm.setFieldValue(`quantity_${index}`, itemDetails?.quantity);
+  //     transactionForm.setFieldValue(`cost_${index}`, itemDetails?.cost);
+  //   });
+  //   setTransactionItemsList(transactionItemsList);
+
+  //   transactionForm.setFieldsValue({
+  //     id: transactionRecord?.id,
+  //     name: transactionRecord?.name,
+  //     mobileNumber: transactionRecord?.mobileNumber,
+  //     address: transactionRecord?.address,
+  //     tradeType: transactionRecord?.tradeType,
+  //   });
+  // }, [transactionRecord, transactionForm]);
 
   const confirmModal = (values) => {
     let amount = 0;
     let transactionItemDetails = [];
 
     transactionItemsList?.forEach((itemIndex) => {
-      const itemId = itemsList?.find(
-        (item) => item?.name === values?.[`itemName_${itemIndex}`]
-      )?.id;
+      // id-0, name-1, price-2, category-3, index-4 ----- order of splitList value
+
+      const itemValuesArray = values?.[`itemValues_${itemIndex}`]?.split("_");
       const itemDetails = {
-        itemId,
-        itemName: values?.[`itemName_${itemIndex}`],
+        categoryName: itemValuesArray?.[3],
+        itemId: itemValuesArray?.[0],
+        itemName: itemValuesArray?.[1],
         quantity: values?.[`quantity_${itemIndex}`],
         cost: values?.[`cost_${itemIndex}`],
       };
@@ -110,13 +118,16 @@ const TransactionModal = ({
         getItemsList();
         getTransactionsList();
         handleCancel();
+        successNotification(response?.data?.data || ACTION_SUCCESSFULL_MESSAGE);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        errorNotification(error?.response?.data?.message || UNEXPECTED_ERROR_MESSAGE);
+      });
   };
 
   const handleCancel = () => {
     setTransactionModal(false);
-    setTransactionRecord?.(null);
+    // setTransactionRecord?.(null);
     transactionForm.resetFields();
   };
 
@@ -132,62 +143,47 @@ const TransactionModal = ({
     setTransactionItemsList(filteredTransactionItemsList);
   };
 
+  const changeItem = (value) => {
+    // id-0, name-1, price-2, category-3, index-4 ----- order of splitList value
+   
+    const itemValuesArray = value?.split("_");
+    transactionForm.setFieldValue(`quantity_${itemValuesArray[4]}`, 1);
+    if (activeTab === tradeTypes.SELL) {
+      transactionForm.setFieldValue(`cost_${itemValuesArray[4]}`, itemValuesArray[2]);
+    }
+  }
+
   const getItemsCard = (index) => {
     return (
-      <div key={index} className="transaction-modal-item-details-container">
-        <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-          <Col className="gutter-row" span={20}>
-            <Form.Item
-              name={`itemName_${index}`}
-              rules={[{ required: true, message: "" }]}
-            >
-              <FloatSelect showSearch label="Item">
-                {itemsList?.map((item) => (
-                  <Select.Option key={item?.id} value={item?.name}>
-                    {item?.name} ({item?.price}/-) {item?.category?.name}
-                  </Select.Option>
-                ))}
-              </FloatSelect>
-            </Form.Item>
-          </Col>
-          {index !== 0 && (
-            <Col className="gutter-row" span={4}>
-              <Button
-                className="transaction-modal-item-minus-button"
-                onClick={() => removeTransactionItem(index)}
-              >
-                <CloseCircleFilled className="transaction-modal-item-minus" />
-              </Button>
-            </Col>
-          )}
-          <Col className="gutter-row" span={12}>
-            <Form.Item
-              name={`quantity_${index}`}
-              rules={[{ required: true, message: "" }]}
-            >
-              <FloatInput type="number" label="Quantity" />
-            </Form.Item>
-          </Col>
-          <Col className="gutter-row" span={12}>
-            <Form.Item
-              name={`cost_${index}`}
-              rules={[{ required: true, message: "" }]}
-            >
-              <FloatInput type="number" label="Cost (per piece)" />
-            </Form.Item>
-          </Col>
-        </Row>
-      </div>
+      <TransactionCardItem 
+      itemTotal={itemTotal}
+      setItemTotal={setItemTotal}
+      index={index}
+      itemsList={itemsList}
+      changeItem={changeItem}
+      removeTransactionItem={removeTransactionItem}
+      transactionForm={transactionForm}
+      />
     );
   };
 
+  const getSaveText = () => {
+    let finalAmount = 0;
+    Object.entries(itemTotal)?.forEach(([key, value]) => {
+      if (transactionItemsList?.includes(parseInt(key))) {
+        finalAmount+= parseInt(value);
+      }
+    })
+    return finalAmount ? ` - Rs.${finalAmount}/-` : "";
+  }
+
   return (
     <Modal
-      //   title={transactionRecord ? "Edit Transaction" : "Add Transaction"}
       title={
         <div className="space-between side-margins">
           <span>
-            {transactionRecord ? "Edit Transaction" : "Add Transaction"}
+            {/* {transactionRecord ? "Edit Transaction" : "Add Transaction"} */}
+            Add Transaction
           </span>
           <Button type="primary" onClick={addTransactionItem}>
             <PlusOutlined />
@@ -280,14 +276,8 @@ const TransactionModal = ({
           {transactionItemsList?.map((index) => getItemsCard(index))}
         </div>
 
-        {/* <Col className="gutter-row" span={24}>
-          <Form.Item name="amount">
-            <FloatInput disabled type="number" label="Total Amount" />
-          </Form.Item>
-        </Col> */}
-
         <FormButtons
-          saveText="Submit"
+          saveText={`Submit${getSaveText()}`}
           cancelText="Cancel"
           handleCancel={handleCancel}
         />

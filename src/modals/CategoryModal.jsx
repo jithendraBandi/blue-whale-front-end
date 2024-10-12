@@ -4,7 +4,8 @@ import FormButtons from "../utils/FormButtons";
 import FloatInput from "../utils/FloatInput";
 import axios from "axios";
 import { SAVE_CATEGORY } from "../utils/apis";
-import { errorNotification } from "../utils/constants";
+import { errorNotification, successNotification } from "../utils/constants";
+import { ACTION_SUCCESSFULL_MESSAGE, UNEXPECTED_ERROR_MESSAGE } from "../utils/stringConstants";
 
 const CategoryModal = ({
   categoryModal,
@@ -34,8 +35,11 @@ const CategoryModal = ({
             getCategoriesList();
             categoryRecord && getItemsList();
             handleCancel();
+            successNotification(response?.data?.data || ACTION_SUCCESSFULL_MESSAGE);
         })
-        .catch(error => {});
+        .catch(error => {
+          errorNotification(error?.response?.data?.message || UNEXPECTED_ERROR_MESSAGE);
+        });
   };
 
   const handleCancel = () => {

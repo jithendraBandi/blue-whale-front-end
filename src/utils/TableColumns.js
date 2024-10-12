@@ -1,13 +1,11 @@
-import { EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Space } from "antd";
 import { quantityFilters } from "./constants";
 
-export const categoriesTableColumns = ({ categoryEdit }) => [
+export const categoriesTableColumns = ({ categoryEdit, deleteCategory }) => [
   {
-    title: "Id",
-    dataIndex: "id",
-    key: "id",
-    sorter: (a, b) => a?.id - b?.id,
+    title: "S.No",
+    render: (_, record, index) => index + 1,
   },
   {
     title: "Category",
@@ -23,21 +21,18 @@ export const categoriesTableColumns = ({ categoryEdit }) => [
         <Button onClick={() => categoryEdit(record)}>
           <EditOutlined style={{ color: "blue" }} />
         </Button>
-        {/* <DeleteOutlined
-          style={{ color: "red" }}
-          onClick={() => deleteProfile(record)}
-        /> */}
+        <Button onClick={() => deleteCategory(record)}>
+          <DeleteOutlined className="red-color" />
+        </Button>
       </Space>
     ),
   },
 ];
 
-export const itemsTableColumns = ({ itemEdit, getCategoryFilterList }) => [
+export const itemsTableColumns = ({ itemEdit, getCategoryFilterList, deleteItem }) => [
   {
-    title: "Id",
-    dataIndex: "id",
-    key: "id",
-    sorter: (a, b) => a?.id - b?.id,
+    title: "S.No",
+    render: (_, record, index) => index + 1,
   },
   {
     title: "Category",
@@ -65,16 +60,17 @@ export const itemsTableColumns = ({ itemEdit, getCategoryFilterList }) => [
     key: "quantity",
     sorter: (a, b) => a?.quantity - b?.quantity,
     filters: [
-      {text: quantityFilters.GREEN, value: quantityFilters.GREEN},
-      {text: quantityFilters.YELLOW, value: quantityFilters.YELLOW},
-      {text: quantityFilters.RED, value: quantityFilters.RED},
+      { text: quantityFilters.GREEN, value: quantityFilters.GREEN },
+      { text: quantityFilters.YELLOW, value: quantityFilters.YELLOW },
+      { text: quantityFilters.RED, value: quantityFilters.RED },
     ],
     onFilter: (value, record) => {
       if (value === quantityFilters.RED) return record?.quantity === 0;
-      else if (value === quantityFilters.YELLOW) return record?.quantity <= 9 && record?.quantity > 0;
+      else if (value === quantityFilters.YELLOW)
+        return record?.quantity <= 9 && record?.quantity > 0;
       else if (value === quantityFilters.GREEN) return record?.quantity >= 10;
       return false;
-    }
+    },
   },
   {
     title: "Price",
@@ -90,21 +86,21 @@ export const itemsTableColumns = ({ itemEdit, getCategoryFilterList }) => [
         <Button onClick={() => itemEdit(record)}>
           <EditOutlined style={{ color: "blue" }} />
         </Button>
-        {/* <DeleteOutlined
-          style={{ color: "red" }}
-          onClick={() => deleteProfile(record)}
-        /> */}
+        <Button onClick={() => deleteItem(record)}>
+          <DeleteOutlined className="red-color" />
+        </Button>
       </Space>
     ),
   },
 ];
 
-export const transactionTableColumns = ({ transactionEdit }) => [
+export const transactionTableColumns = ({
+  // transactionEdit,
+  deleteTransaction,
+}) => [
   {
-    title: "Id",
-    dataIndex: "id",
-    key: "id",
-    sorter: (a, b) => a?.id - b?.id,
+    title: "S.No",
+    render: (_, record, index) => index + 1,
   },
   {
     title: "Name",
@@ -138,8 +134,11 @@ export const transactionTableColumns = ({ transactionEdit }) => [
     key: "action",
     render: (_, record) => (
       <Space size="middle">
-        <Button onClick={() => transactionEdit(record)}>
+        {/* <Button onClick={() => transactionEdit(record)}>
           <EditOutlined style={{ color: "blue" }} />
+        </Button> */}
+        <Button onClick={() => deleteTransaction(record)}>
+          <DeleteOutlined className="red-color" />
         </Button>
       </Space>
     ),
@@ -148,12 +147,16 @@ export const transactionTableColumns = ({ transactionEdit }) => [
 
 export const transactionItemsDetailsTableColumns = () => [
   {
-    title: "Item Id",
-    dataIndex: "itemId",
-    key: "itemId",
+    title: "S.No",
+    render: (_, record, index) => index + 1,
   },
   {
-    title: "Item Name",
+    title: "Category",
+    dataIndex: "categoryName",
+    key: "categoryName",
+  },
+  {
+    title: "Item",
     dataIndex: "itemName",
     key: "itemName",
   },
@@ -167,5 +170,9 @@ export const transactionItemsDetailsTableColumns = () => [
     dataIndex: "cost",
     key: "cost",
     sorter: (a, b) => a?.cost - b?.cost,
+  },
+  {
+    title: "Price",
+    render: (_, record) => record?.quantity * record?.cost,
   },
 ];

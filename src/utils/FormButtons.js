@@ -5,6 +5,7 @@ const FormButtons = ({
   cancelText, 
   handleCancel,
   handleReset,
+  saveButtonProps,
  }) => {
   return (
     <Row
@@ -19,7 +20,7 @@ const FormButtons = ({
       <Button danger onClick={handleCancel}>
         {cancelText}
       </Button>
-      <Button type="primary" htmlType="submit">
+      <Button type="primary" htmlType="submit" {...saveButtonProps}>
         {saveText}
       </Button>
       {handleReset !== undefined && (
