@@ -188,12 +188,12 @@ export const maintenanceTableColumns = ({maintenanceEdit, deleteMaintenance}) =>
     title: "Name",
     dataIndex: "name",
     key: "name",
-    sorter: (a, b) => a?.name?.localeCompare(b?.name),
   },
   {
     title: "Date",
     dataIndex: "date",
     key: "date",
+    sorter: (a, b) => a?.date?.localeCompare(b?.date),
   },
   {
     title: "Mobile Number",

@@ -100,7 +100,7 @@ const MaintenanceModal = ({
               name="date"
               rules={[{ required: true, message: "" }]}
             >
-              <DatePicker className="full-width" />
+              <DatePicker onChange={() => document.getElementById("maintenanceMobileNumberInput").focus()} className="full-width" />
             </Form.Item>
           </Col>
           <Col className="gutter-row" span={12}>
@@ -113,7 +113,7 @@ const MaintenanceModal = ({
                 },
               ]}
             >
-              <FloatInput type="number" label="Mobile Number" />
+              <FloatInput id="maintenanceMobileNumberInput" type="number" label="Mobile Number" />
             </Form.Item>
           </Col>
           <Col className="gutter-row" span={12}>

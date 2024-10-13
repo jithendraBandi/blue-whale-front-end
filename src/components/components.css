@@ -10,6 +10,9 @@
   align-items: center;
   z-index: 100;
 }
+.logo-image {
+  width: 60px;
+}
 .item-quantity-zero {
   background-color: #f8d7da !important;
 }
@@ -18,4 +21,7 @@
 }
 .item-quantity-ok {
   background-color: #d4edda !important;
+}
+.total-number-display {
+  color: rgb(239, 155, 240);
 }

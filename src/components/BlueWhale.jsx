@@ -8,6 +8,7 @@ import Transactions from "./HeaderTabViews/Transactions";
 import { GET_ALL_ITEMS, GET_ALL_MAINTENANCE, GET_ALL_TRANSACTIONS, GET_CATEGORIES } from "../utils/apis";
 import axios from "axios";
 import Maintencance from "./HeaderTabViews/Maintencance";
+import Logo from "../images/logo.png";
 
 const BlueWhale = () => {
   const [activeTabView, setActiveTabView] = useState(headerTabViews.ITEMS);
@@ -60,20 +61,25 @@ const BlueWhale = () => {
   return (
     <>
       <div className="header">
-        <h3 className="blue-color">Blue Whale Aqua Solutions</h3>
+        <div className="flex-row">
+          <img className="logo-image" src={Logo} alt="logo" />
+          <h3 className="blue-color">Blue Whale Aqua Solutions</h3>
+        </div>
         <Radio.Group
           onChange={(event) => setActiveTabView(event.target.value)}
           value={activeTabView}
         >
-          <Radio.Button value={headerTabViews.ITEMS}>Items</Radio.Button>
+          <Radio.Button value={headerTabViews.ITEMS}>
+            Items {<span className="total-number-display">{itemsList.length}</span>}
+            </Radio.Button>
           <Radio.Button value={headerTabViews.CATEGORIES}>
-            Categories
+            Categories {<span className="total-number-display">{categoriesList.length}</span>}
           </Radio.Button>
           <Radio.Button value={headerTabViews.TRANSACTIONS}>
-            Transactions
+            Transactions {<span className="total-number-display">{transactionsList.length}</span>}
           </Radio.Button>
           <Radio.Button value={headerTabViews.MAINTENANCE}>
-            Maintenance
+            Maintenance {<span className="total-number-display">{maintenanceList.length}</span>}
           </Radio.Button>
         </Radio.Group>
       </div>

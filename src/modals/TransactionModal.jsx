@@ -227,7 +227,7 @@ const TransactionModal = ({
               name="date"
               rules={[{ required: true, message: "" }]}
             >
-              <DatePicker className="full-width" />
+              <DatePicker onChange={() => document.getElementById("transactionMobileNumberInput").focus()} className="full-width" />
             </Form.Item>
           </Col>
         </Row>
@@ -264,7 +264,7 @@ const TransactionModal = ({
                 },
               ]}
             >
-              <FloatInput type="number" label="Mobile Number" />
+              <FloatInput id="transactionMobileNumberInput" type="number" label="Mobile Number" />
             </Form.Item>
           </Col>
           <Col className="gutter-row" span={8}>

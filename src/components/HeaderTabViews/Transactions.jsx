@@ -31,7 +31,7 @@ const Transactions = ({
   const [tradeType, setTradeType] = useState(tradeTypes.SELL);
   const [transactionDateSearch, setTransactionDateSearch] = useState("");
 
-  const filteredTransactionList = () =>
+  const filteredTransactionList = (tradeType) =>
     transactionsList?.filter(
       (transaction) =>
         transaction?.tradeType === tradeType &&
@@ -83,9 +83,9 @@ const Transactions = ({
           onChange={(event) => setTradeType(event.target.value)}
           value={tradeType}
         >
-          <Radio.Button value={tradeTypes.SELL}>{tradeTypes.SELL}</Radio.Button>
-          <Radio.Button value={tradeTypes.BUY}>{tradeTypes.BUY}</Radio.Button>
-          <Radio.Button value={tradeTypes.USAGE}>{tradeTypes.USAGE}</Radio.Button>
+          <Radio.Button value={tradeTypes.SELL}>{tradeTypes.SELL} {<span className="total-number-display">{filteredTransactionList(tradeTypes.SELL).length}</span>}</Radio.Button>
+          <Radio.Button value={tradeTypes.BUY}>{tradeTypes.BUY} {<span className="total-number-display">{filteredTransactionList(tradeTypes.BUY).length}</span>}</Radio.Button>
+          <Radio.Button value={tradeTypes.USAGE}>{tradeTypes.USAGE} {<span className="total-number-display">{filteredTransactionList(tradeTypes.USAGE).length}</span>}</Radio.Button>
         </Radio.Group>
         <PlusOutlinedButton setModal={setTransactionModal} />
       </div>
@@ -94,7 +94,7 @@ const Transactions = ({
           // transactionEdit,
           deleteTransaction,
         })}
-        dataSource={filteredTransactionList()}
+        dataSource={filteredTransactionList(tradeType)}
         rowKey="id"
         pagination={false}
         expandable={{
