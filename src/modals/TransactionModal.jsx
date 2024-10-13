@@ -78,9 +78,9 @@ const TransactionModal = ({
     });
 
     Modal.confirm({
-      title: "Confirm Transaction",
+      title: `Confirm ${transactionForm.getFieldValue("tradeType")} Transition`,
       content: (
-        <span>
+        transactionForm.getFieldValue("tradeType") !== tradeTypes.USAGE && <span>
           The total amount is <strong>Rs.{amount}/-</strong>
         </span>
       ),
@@ -156,6 +156,7 @@ const TransactionModal = ({
   const getItemsCard = (index) => {
     return (
       <TransactionCardItem 
+      activeTab={activeTab}
       itemTotal={itemTotal}
       setItemTotal={setItemTotal}
       index={index}
@@ -236,12 +237,15 @@ const TransactionModal = ({
               name="tradeType"
               rules={[{ required: true, message: "" }]}
             >
-              <FloatSelect disabled label="Trade Type">
+              <FloatSelect label="Trade Type" onChange={(event) => setActiveTab(event)}>
                 <Select.Option value={tradeTypes.SELL}>
                   {tradeTypes.SELL}
                 </Select.Option>
                 <Select.Option value={tradeTypes.BUY}>
                   {tradeTypes.BUY}
+                </Select.Option>
+                <Select.Option value={tradeTypes.USAGE}>
+                  {tradeTypes.USAGE}
                 </Select.Option>
               </FloatSelect>
             </Form.Item>

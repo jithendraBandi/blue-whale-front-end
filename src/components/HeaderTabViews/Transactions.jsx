@@ -85,6 +85,7 @@ const Transactions = ({
         >
           <Radio.Button value={tradeTypes.SELL}>{tradeTypes.SELL}</Radio.Button>
           <Radio.Button value={tradeTypes.BUY}>{tradeTypes.BUY}</Radio.Button>
+          <Radio.Button value={tradeTypes.USAGE}>{tradeTypes.USAGE}</Radio.Button>
         </Radio.Group>
         <PlusOutlinedButton setModal={setTransactionModal} />
       </div>
@@ -99,7 +100,7 @@ const Transactions = ({
         expandable={{
           expandedRowRender: (record) => (
             <Table
-              columns={transactionItemsDetailsTableColumns()}
+              columns={transactionItemsDetailsTableColumns(tradeType)}
               dataSource={record?.transactionItemDetails}
               rowKey="itemId"
               pagination={false}

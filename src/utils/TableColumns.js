@@ -1,6 +1,6 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Space } from "antd";
-import { quantityFilters } from "./constants";
+import { quantityFilters, tradeTypes } from "./constants";
 
 export const categoriesTableColumns = ({ categoryEdit, deleteCategory }) => [
   {
@@ -141,7 +141,8 @@ export const transactionTableColumns = ({
   },
 ];
 
-export const transactionItemsDetailsTableColumns = () => [
+export const transactionItemsDetailsTableColumns = (tradeType) => {
+  let allColumns = [
   {
     title: "S.No",
     render: (_, record, index) => index + 1,
@@ -172,6 +173,11 @@ export const transactionItemsDetailsTableColumns = () => [
     render: (_, record) => record?.quantity * record?.cost,
   },
 ];
+if (tradeType === tradeTypes.USAGE) {
+  return allColumns.slice(0,4);
+}
+return allColumns;
+};
 
 export const maintenanceTableColumns = ({maintenanceEdit, deleteMaintenance}) => [
   {

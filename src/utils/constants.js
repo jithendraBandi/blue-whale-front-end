@@ -18,6 +18,7 @@ export const headerTabViews = {
 export const tradeTypes = {
   BUY: "BUY",
   SELL: "SELL",
+  USAGE: "USAGE",
 };
 
 export const quantityFilters = {
