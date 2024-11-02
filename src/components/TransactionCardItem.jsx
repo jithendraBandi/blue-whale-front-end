@@ -24,6 +24,8 @@ const TransactionCardItem = ({
       [index]: selectedItemTotal ? selectedItemTotal : null,
     });
   };
+
+  const selectedItemQuantity = itemsList?.find(item => item?.id === parseInt(transactionForm.getFieldValue(`itemValues_${index}`)?.split("_")?.[0]))?.quantity;
   return (
     <div key={index} className="transaction-modal-item-details-container">
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
@@ -69,7 +71,18 @@ const TransactionCardItem = ({
         <Col className="gutter-row" span={12}>
           <Form.Item
             name={`quantity_${index}`}
-            rules={[{ required: true, message: "" }]}
+            rules={[
+              { required: true, message: "" },
+              {
+                validator: (_, value) => {
+                  if (!value || value <= selectedItemQuantity) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error(`In Stock: ${selectedItemQuantity}`));
+                },
+              },
+            ]}
+            val
           >
             <FloatInput
               onChange={getItemTotal}

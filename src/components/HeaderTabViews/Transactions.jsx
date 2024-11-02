@@ -31,6 +31,7 @@ const Transactions = ({
   const [transactionRecord, setTransactionRecord] = useState(null);
   const [invoiceModal, setInvoiceModal] = useState(false);
   const [tradeType, setTradeType] = useState(tradeTypes.SELL);
+  const [searchName, setSearchName] = useState("");
   const [transactionDateSearch, setTransactionDateSearch] = useState("");
 
   const filteredTransactionList = (tradeType) =>
@@ -39,7 +40,8 @@ const Transactions = ({
         transaction?.tradeType === tradeType &&
         transaction?.date
           .toLowerCase()
-          ?.includes(transactionDateSearch?.toLowerCase())
+          ?.includes(transactionDateSearch?.toLowerCase()) &&
+        transaction?.name.toLowerCase()?.includes(searchName?.toLowerCase())
     );
 
   // const transactionEdit = (record) => {
@@ -50,7 +52,7 @@ const Transactions = ({
   const viewInvoice = (record) => {
     setInvoiceModal(true);
     setTransactionRecord(record);
-  }
+  };
 
   const deleteTransaction = (record) => {
     Modal.confirm({
@@ -80,19 +82,49 @@ const Transactions = ({
   return (
     <>
       <div className="space-between side-margins">
-        <FloatInput
-          onChange={(event) => setTransactionDateSearch(event.target.value)}
-          value={transactionDateSearch}
-          type="search"
-          label="Search Date..."
-        />
+        <div className="space-between">
+          <FloatInput
+            onChange={(event) => setSearchName(event.target.value)}
+            value={searchName}
+            type="search"
+            label="Search By Name..."
+          />
+          <FloatInput
+            className="side-margins"
+            onChange={(event) => setTransactionDateSearch(event.target.value)}
+            value={transactionDateSearch}
+            type="search"
+            label="Search By Date..."
+          />
+        </div>
         <Radio.Group
           onChange={(event) => setTradeType(event.target.value)}
           value={tradeType}
         >
-          <Radio.Button value={tradeTypes.SELL}>{tradeTypes.SELL} {<span className="total-number-display">{filteredTransactionList(tradeTypes.SELL).length}</span>}</Radio.Button>
-          <Radio.Button value={tradeTypes.BUY}>{tradeTypes.BUY} {<span className="total-number-display">{filteredTransactionList(tradeTypes.BUY).length}</span>}</Radio.Button>
-          <Radio.Button value={tradeTypes.USAGE}>{tradeTypes.USAGE} {<span className="total-number-display">{filteredTransactionList(tradeTypes.USAGE).length}</span>}</Radio.Button>
+          <Radio.Button value={tradeTypes.SELL}>
+            {tradeTypes.SELL}{" "}
+            {
+              <span className="total-number-display">
+                {filteredTransactionList(tradeTypes.SELL).length}
+              </span>
+            }
+          </Radio.Button>
+          <Radio.Button value={tradeTypes.BUY}>
+            {tradeTypes.BUY}{" "}
+            {
+              <span className="total-number-display">
+                {filteredTransactionList(tradeTypes.BUY).length}
+              </span>
+            }
+          </Radio.Button>
+          <Radio.Button value={tradeTypes.USAGE}>
+            {tradeTypes.USAGE}{" "}
+            {
+              <span className="total-number-display">
+                {filteredTransactionList(tradeTypes.USAGE).length}
+              </span>
+            }
+          </Radio.Button>
         </Radio.Group>
         <PlusOutlinedButton setModal={setTransactionModal} />
       </div>
