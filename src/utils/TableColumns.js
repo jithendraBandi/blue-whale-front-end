@@ -1,4 +1,4 @@
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, FileImageOutlined } from "@ant-design/icons";
 import { Button, Space } from "antd";
 import { quantityFilters, tradeTypes } from "./constants";
 
@@ -92,6 +92,7 @@ export const itemsTableColumns = ({ itemEdit, getCategoryFilterList, deleteItem 
 
 export const transactionTableColumns = ({
   // transactionEdit,
+  viewInvoice,
   deleteTransaction,
 }) => [
   {
@@ -133,6 +134,11 @@ export const transactionTableColumns = ({
         {/* <Button onClick={() => transactionEdit(record)}>
           <EditOutlined style={{ color: "blue" }} />
         </Button> */}
+        {record?.tradeType === tradeTypes.SELL && (
+          <Button onClick={() => viewInvoice(record)}>
+          <FileImageOutlined className="blue-color" />
+          </Button>
+        )}
         <Button onClick={() => deleteTransaction(record)}>
           <DeleteOutlined className="red-color" />
         </Button>

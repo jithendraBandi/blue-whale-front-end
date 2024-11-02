@@ -26,6 +26,7 @@ const TransactionModal = ({
   const [transactionForm] = Form.useForm();
   const [transactionItemsList, setTransactionItemsList] = useState([0]);
   const [itemTotal, setItemTotal] = useState({});
+  const [selectedProducts, setSelectedProducts] = useState({});
 
   useEffect(() => {
     transactionForm.setFieldValue("tradeType", activeTab);
@@ -140,14 +141,30 @@ const TransactionModal = ({
     const filteredTransactionItemsList = transactionItemsList?.filter(
       (itemIndex) => itemIndex !== index
     );
+    transactionForm.setFieldValue(`itemValues_${index}`, undefined);
+    transactionForm.setFieldValue(`quantity_${index}`, undefined);
+    transactionForm.setFieldValue(`cost_${index}`, undefined);
+    const updatedProducts = {...selectedProducts};
+    updatedProducts[index] = undefined;
+    setSelectedProducts(updatedProducts);
     setTransactionItemsList(filteredTransactionItemsList);
   };
 
-  const changeItem = (value) => {
+  const changeItem = (value, index) => {
     // id-0, name-1, price-2, category-3, index-4 ----- order of splitList value
-   
+    const updatedProducts = {...selectedProducts};
+
+   if (value === undefined) {
+    transactionForm.setFieldValue(`quantity_${index}`, undefined);
+    transactionForm.setFieldValue(`cost_${index}`, undefined);
+    updatedProducts[index] = undefined;
+    setSelectedProducts(updatedProducts);
+    return;
+   }
     const itemValuesArray = value?.split("_");
     transactionForm.setFieldValue(`quantity_${itemValuesArray[4]}`, 1);
+    updatedProducts[index] = itemValuesArray[0];
+    setSelectedProducts(updatedProducts);
     if (activeTab === tradeTypes.SELL) {
       transactionForm.setFieldValue(`cost_${itemValuesArray[4]}`, itemValuesArray[2]);
     }
@@ -164,6 +181,7 @@ const TransactionModal = ({
       changeItem={changeItem}
       removeTransactionItem={removeTransactionItem}
       transactionForm={transactionForm}
+      selectedProducts={Object.values(selectedProducts)}
       />
     );
   };
@@ -206,7 +224,7 @@ const TransactionModal = ({
       centered
       footer={null}
     >
-      <Form name="transactionForm" form={transactionForm} onFinish={confirmModal}>
+      <Form name="transactionForm" form={transactionForm} onFinish={confirmModal} onFinishFailed={() => errorNotification("Enter All Fields")}>
         <Row
           gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
           className="first-row-margin-top"

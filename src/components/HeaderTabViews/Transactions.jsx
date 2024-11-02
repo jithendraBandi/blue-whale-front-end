@@ -19,6 +19,7 @@ import {
   UNEXPECTED_ERROR_MESSAGE,
 } from "../../utils/stringConstants";
 import FloatInput from "../../utils/FloatInput";
+import InvoiceViewModal from "../../modals/InvoiceViewModal";
 
 const Transactions = ({
   getTransactionsList,
@@ -27,7 +28,8 @@ const Transactions = ({
   itemsList,
 }) => {
   const [transactionModal, setTransactionModal] = useState(false);
-  // const [transactionRecord, setTransactionRecord] = useState(null);
+  const [transactionRecord, setTransactionRecord] = useState(null);
+  const [invoiceModal, setInvoiceModal] = useState(false);
   const [tradeType, setTradeType] = useState(tradeTypes.SELL);
   const [transactionDateSearch, setTransactionDateSearch] = useState("");
 
@@ -44,6 +46,11 @@ const Transactions = ({
   //   setTransactionModal(true);
   //   // setTransactionRecord(record);
   // };
+
+  const viewInvoice = (record) => {
+    setInvoiceModal(true);
+    setTransactionRecord(record);
+  }
 
   const deleteTransaction = (record) => {
     Modal.confirm({
@@ -92,6 +99,7 @@ const Transactions = ({
       <Table
         columns={transactionTableColumns({
           // transactionEdit,
+          viewInvoice,
           deleteTransaction,
         })}
         dataSource={filteredTransactionList(tradeType)}
@@ -120,6 +128,14 @@ const Transactions = ({
           getItemsList={getItemsList}
           activeTab={tradeType}
           setActiveTab={setTradeType}
+        />
+      )}
+      {invoiceModal && (
+        <InvoiceViewModal
+          invoiceModal={invoiceModal}
+          setInvoiceModal={setInvoiceModal}
+          record={transactionRecord}
+          setRecord={setTransactionRecord}
         />
       )}
     </>

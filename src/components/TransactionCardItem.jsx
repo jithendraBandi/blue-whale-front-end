@@ -13,6 +13,7 @@ const TransactionCardItem = ({
   changeItem,
   removeTransactionItem,
   transactionForm,
+  selectedProducts,
 }) => {
   const getItemTotal = () => {
     const quantity = transactionForm.getFieldValue(`quantity_${index}`);
@@ -35,7 +36,7 @@ const TransactionCardItem = ({
               showSearch
               label="Item"
               onChange={(value) => {
-                changeItem(value);
+                changeItem(value,index);
                 getItemTotal();
               }}
             >
@@ -43,8 +44,13 @@ const TransactionCardItem = ({
                 <Select.Option
                   key={item?.id}
                   value={`${item?.id}_${item?.name}_${item?.price}_${item?.category?.name}_${index}`}
+                  disabled={(
+                    parseInt(item?.quantity) > 0 ? false : true
+                  ) || (
+                    selectedProducts?.includes(item?.id?.toString())
+                  )}
                 >
-                  {item?.category?.name} - {item?.name} (Rs.{item?.price}/-)
+                  (<span className={parseInt(item?.quantity) > 0 ? "green-color" : "red-color"}>{item?.quantity}</span>) {item?.category?.name} - {item?.name} (Rs.{item?.price}/-)
                 </Select.Option>
               ))}
             </FloatSelect>

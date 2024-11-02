@@ -29,6 +29,12 @@ code {
 .full-width {
   width: 100%;
 }
+.half-width {
+  width: 50%;
+}
+.quater-width {
+  width: 25%;
+}
 .flex-row {
   display: flex;
   align-items: center;
@@ -65,4 +71,7 @@ code {
 }
 .blue-color {
   color: blue;
+}
+.yellow-color {
+  color: yellow;
 }
