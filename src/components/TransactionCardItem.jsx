@@ -46,11 +46,11 @@ const TransactionCardItem = ({
                 <Select.Option
                   key={item?.id}
                   value={`${item?.id}_${item?.name}_${item?.price}_${item?.category?.name}_${index}`}
-                  disabled={(
+                  disabled={activeTab !== tradeTypes.BUY && ((
                     parseInt(item?.quantity) > 0 ? false : true
                   ) || (
                     selectedProducts?.includes(item?.id?.toString())
-                  )}
+                  ))}
                 >
                   (<span className={parseInt(item?.quantity) > 0 ? "green-color" : "red-color"}>{item?.quantity}</span>) {item?.category?.name} - {item?.name} (Rs.{item?.price}/-)
                 </Select.Option>
