@@ -73,14 +73,6 @@ const TransactionCardItem = ({
             name={`quantity_${index}`}
             rules={[
               { required: true, message: "" },
-              {
-                validator: (_, value) => {
-                  if (!value || value <= selectedItemQuantity || activeTab !== tradeTypes.BUY) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject(new Error(`In Stock: ${selectedItemQuantity}`));
-                },
-              },
             ]}
             val
           >
