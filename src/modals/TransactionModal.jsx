@@ -15,8 +15,8 @@ import { ACTION_SUCCESSFULL_MESSAGE, UNEXPECTED_ERROR_MESSAGE } from "../utils/s
 const TransactionModal = ({
   transactionModal,
   setTransactionModal,
-  // transactionRecord,
-  // setTransactionRecord,
+  transactionRecord,
+  setTransactionRecord,
   itemsList,
   getTransactionsList,
   getItemsList,
@@ -24,40 +24,48 @@ const TransactionModal = ({
   setActiveTab,
 }) => {
   const [transactionForm] = Form.useForm();
-  const [transactionItemsList, setTransactionItemsList] = useState([0]);
+  const [transactionItemsList, setTransactionItemsList] = useState();
   const [itemTotal, setItemTotal] = useState({});
   const [selectedProducts, setSelectedProducts] = useState({});
-
-  useEffect(() => {
-    transactionForm.setFieldValue("tradeType", activeTab);
-  }, [activeTab, transactionForm])
+  const [uniqueCount, setUniqueCount] = useState();
 
   // useEffect(() => {
-  //   if (!transactionRecord) {
-  //       transactionForm.setFieldValue("tradeType", activeTab);
-  //       return;
-  //   }
-  //   if (transactionRecord?.date && transactionRecord?.date !== "") {
-  //     const transactionDate = dayjs(transactionRecord?.date, "DD-MM-YYYY");
-  //     transactionForm.setFieldValue("date", transactionDate);
-  //   }
-  //   let transactionItemsList = [];
-  //   transactionRecord?.transactionItemDetails?.forEach((itemDetails, index) => {
-  //     transactionItemsList.push(index);
-  //     transactionForm.setFieldValue(`itemName_${index}`, itemDetails?.itemName);
-  //     transactionForm.setFieldValue(`quantity_${index}`, itemDetails?.quantity);
-  //     transactionForm.setFieldValue(`cost_${index}`, itemDetails?.cost);
-  //   });
-  //   setTransactionItemsList(transactionItemsList);
+  //   transactionForm.setFieldValue("tradeType", activeTab);
+  // }, [activeTab, transactionForm])
 
-  //   transactionForm.setFieldsValue({
-  //     id: transactionRecord?.id,
-  //     name: transactionRecord?.name,
-  //     mobileNumber: transactionRecord?.mobileNumber,
-  //     address: transactionRecord?.address,
-  //     tradeType: transactionRecord?.tradeType,
-  //   });
-  // }, [transactionRecord, transactionForm]);
+  useEffect(() => {
+    if (!transactionRecord) {
+        transactionForm.setFieldValue("tradeType", activeTab);
+        setTransactionItemsList([0]);
+        setUniqueCount(1);
+        return;
+    }
+    if (transactionRecord?.date && transactionRecord?.date !== "") {
+      const transactionDate = dayjs(transactionRecord?.date, "DD-MM-YYYY");
+      transactionForm.setFieldValue("date", transactionDate);
+      let transactionItemsList = [];
+      let modifyingCount = 0;
+      transactionRecord?.transactionItemDetails?.forEach((itemDetails, index) => {
+        transactionItemsList.push(modifyingCount);
+        const item = itemsList?.find(item => item?.id === itemDetails?.itemId);
+        transactionForm.setFieldValue(`itemValues_${modifyingCount}`, `${item?.id}_${item?.name}_${item?.price}_${item?.category?.name}_${modifyingCount}`);
+        // transactionForm.setFieldValue(`itemName_${modifyingCount}`, itemDetails?.itemName);
+        transactionForm.setFieldValue(`quantity_${modifyingCount}`, itemDetails?.quantity);
+        transactionForm.setFieldValue(`cost_${modifyingCount}`, itemDetails?.cost);
+        modifyingCount++;
+      });
+      setTransactionItemsList(transactionItemsList);
+      setUniqueCount(modifyingCount);
+  
+      transactionForm.setFieldsValue({
+        id: transactionRecord?.id,
+        name: transactionRecord?.name,
+        mobileNumber: transactionRecord?.mobileNumber,
+        address: transactionRecord?.address,
+        tradeType: transactionRecord?.tradeType,
+      });
+    }
+  }, [transactionRecord, transactionForm, activeTab]);
 
   const confirmModal = (values) => {
     let amount = 0;
@@ -128,13 +136,15 @@ const TransactionModal = ({
 
   const handleCancel = () => {
     setTransactionModal(false);
-    // setTransactionRecord?.(null);
+    setTransactionRecord?.(null);
     transactionForm.resetFields();
   };
 
   const addTransactionItem = () => {
-    const lastIndex = transactionItemsList[transactionItemsList.length - 1];
-    setTransactionItemsList([...transactionItemsList, lastIndex + 1]);
+    // const lastIndex = transactionItemsList[transactionItemsList.length - 1];
+    // setTransactionItemsList([...transactionItemsList, lastIndex + 1]);
+    setTransactionItemsList([...transactionItemsList, uniqueCount]);
+    setUniqueCount(uniqueCount+1);
   };
 
   const removeTransactionItem = (index) => {
@@ -201,8 +211,8 @@ const TransactionModal = ({
       title={
         <div className="space-between side-margins">
           <span>
-            {/* {transactionRecord ? "Edit Transaction" : "Add Transaction"} */}
-            Add Transaction
+            {transactionRecord ? "Edit Transaction" : "Add Transaction"}
+            {/* Add Transaction */}
           </span>
           <Button type="primary" onClick={addTransactionItem}>
             <PlusOutlined />

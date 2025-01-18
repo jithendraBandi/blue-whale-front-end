@@ -44,10 +44,10 @@ const Transactions = ({
         transaction?.name.toLowerCase()?.includes(searchName?.toLowerCase())
     );
 
-  // const transactionEdit = (record) => {
-  //   setTransactionModal(true);
-  //   // setTransactionRecord(record);
-  // };
+  const transactionEdit = (record) => {
+    setTransactionModal(true);
+    setTransactionRecord(record);
+  };
 
   const viewInvoice = (record) => {
     setInvoiceModal(true);
@@ -130,7 +130,7 @@ const Transactions = ({
       </div>
       <Table
         columns={transactionTableColumns({
-          // transactionEdit,
+          transactionEdit,
           viewInvoice,
           deleteTransaction,
         })}
@@ -153,8 +153,8 @@ const Transactions = ({
         <TransactionModal
           transactionModal={transactionModal}
           setTransactionModal={setTransactionModal}
-          // transactionRecord={transactionRecord}
-          // setTransactionRecord={setTransactionRecord}
+          transactionRecord={transactionRecord}
+          setTransactionRecord={setTransactionRecord}
           itemsList={itemsList}
           getTransactionsList={getTransactionsList}
           getItemsList={getItemsList}

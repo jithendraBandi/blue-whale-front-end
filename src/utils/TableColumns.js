@@ -91,7 +91,7 @@ export const itemsTableColumns = ({ itemEdit, getCategoryFilterList, deleteItem 
 ];
 
 export const transactionTableColumns = ({
-  // transactionEdit,
+  transactionEdit,
   viewInvoice,
   deleteTransaction,
 }) => [
@@ -131,9 +131,9 @@ export const transactionTableColumns = ({
     key: "action",
     render: (_, record) => (
       <Space size="middle">
-        {/* <Button onClick={() => transactionEdit(record)}>
+        <Button onClick={() => transactionEdit(record)}>
           <EditOutlined style={{ color: "blue" }} />
-        </Button> */}
+        </Button>
         {record?.tradeType === tradeTypes.SELL && (
           <Button onClick={() => viewInvoice(record)}>
           <FileImageOutlined className="blue-color" />
