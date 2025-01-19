@@ -20,12 +20,14 @@ import {
 } from "../../utils/stringConstants";
 import FloatInput from "../../utils/FloatInput";
 import InvoiceViewModal from "../../modals/InvoiceViewModal";
+import { antdTableScrollYaxis } from "../../utils/styles";
 
 const Transactions = ({
   getTransactionsList,
   getItemsList,
   transactionsList,
   itemsList,
+  contactList,
 }) => {
   const [transactionModal, setTransactionModal] = useState(false);
   const [transactionRecord, setTransactionRecord] = useState(null);
@@ -137,6 +139,7 @@ const Transactions = ({
         dataSource={filteredTransactionList(tradeType)}
         rowKey="id"
         pagination={false}
+        scroll={antdTableScrollYaxis}
         expandable={{
           expandedRowRender: (record) => (
             <Table
@@ -160,6 +163,7 @@ const Transactions = ({
           getItemsList={getItemsList}
           activeTab={tradeType}
           setActiveTab={setTradeType}
+          contactList={contactList}
         />
       )}
       {invoiceModal && (

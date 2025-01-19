@@ -6,7 +6,7 @@ import MaintenanceModal from "../../modals/MaintenanceModal";
 import { ACTION_SUCCESSFULL_MESSAGE, UNDONE_WARNING_MESSAGE, UNEXPECTED_ERROR_MESSAGE } from "../../utils/stringConstants";
 import axios from "axios";
 import { DELETE_MAINTENANCE } from "../../utils/apis";
-import { errorNotification, successNotification } from "../../utils/constants";
+import { errorNotification, maintenanceTypes, successNotification } from "../../utils/constants";
 import { maintenanceTableColumns } from "../../utils/TableColumns";
 
 const Maintencance = ({ maintenanceList, getMaintenanceList, itemsList, }) => {
@@ -43,11 +43,17 @@ const Maintencance = ({ maintenanceList, getMaintenanceList, itemsList, }) => {
     });
   };
 
+  const getMaintenanceFilterList = () => {
+    return maintenanceTypes?.map((type) => ({
+      text: type,
+      value: type,
+    }));
+  };
 
   const filteredMaintenanceList = () =>
     maintenanceList?.filter((maintenance) =>
-      maintenance?.date
-        .toLowerCase()
+      maintenance?.maintenanceDate
+        ?.toLowerCase()
         ?.includes(maintenanceDateSearch?.toLowerCase())
     );
 
@@ -66,6 +72,7 @@ const Maintencance = ({ maintenanceList, getMaintenanceList, itemsList, }) => {
         columns={maintenanceTableColumns({
           maintenanceEdit,
           deleteMaintenance,
+          getMaintenanceFilterList,
         })}
         dataSource={filteredMaintenanceList()}
         rowKey="id"

@@ -1,6 +1,6 @@
-import { Col, DatePicker, Form, Modal, Row } from "antd";
+import { Col, DatePicker, Form, Modal, Row, Select } from "antd";
 import { useEffect } from "react";
-import { errorNotification, successNotification } from "../utils/constants";
+import { errorNotification, maintenanceTypes, successNotification } from "../utils/constants";
 import axios from "axios";
 import { SAVE_MAINTENANCE } from "../utils/apis";
 import dayjs from "dayjs";
@@ -10,6 +10,9 @@ import {
 } from "../utils/stringConstants";
 import FormButtons from "../utils/FormButtons";
 import FloatInput from "../utils/FloatInput";
+import FloatSelect from "../utils/FloatSelect";
+import TextArea from "antd/es/input/TextArea";
+import { modalMediumWidth } from "../utils/styles";
 
 const MaintenanceModal = ({
   maintenanceModal,
@@ -28,9 +31,14 @@ const MaintenanceModal = ({
       const maintenanceDate = dayjs(maintenanceRecord?.date, "DD-MM-YYYY");
       maintenanceForm.setFieldValue("date", maintenanceDate);
     }
+    if (maintenanceRecord?.maintenanceDate && maintenanceRecord?.maintenanceDate !== "") {
+      const maintenanceDate = dayjs(maintenanceRecord?.maintenanceDate, "DD-MM-YYYY");
+      maintenanceForm.setFieldValue("maintenanceDate", maintenanceDate);
+    }
 
     maintenanceForm.setFieldsValue({
-      id: maintenanceRecord?.id,
+      // id: maintenanceRecord?.id,
+      type: maintenanceRecord?.type,
       name: maintenanceRecord?.name,
       mobileNumber: maintenanceRecord?.mobileNumber,
       address: maintenanceRecord?.address,
@@ -43,10 +51,13 @@ const MaintenanceModal = ({
       errorNotification("Name should not be empty");
       return;
     }
-    const maintenanceDate = dayjs(values?.date).format("DD-MM-YYYY");
+    const date = dayjs(values?.date).format("DD-MM-YYYY");
+    const maintenanceDate = dayjs(values?.maintenanceDate).format("DD-MM-YYYY");
     let payload = {
       ...values,
-      date: maintenanceDate,
+      id: maintenanceRecord?.id,
+      date,
+      maintenanceDate,
       name: values?.name?.trim(),
     };
 
@@ -76,15 +87,27 @@ const MaintenanceModal = ({
       open={maintenanceModal}
       onCancel={handleCancel}
       footer={null}
+      width={modalMediumWidth}
     >
       <Form name="maintenanceForm" form={maintenanceForm} onFinish={onFinish}>
         <Row
           gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
           className="first-row-margin-top"
         >
-          <Col className="gutter-row" span={8}>
+          {/* <Col className="gutter-row" span={8}>
             <Form.Item name="id">
               <FloatInput disabled type="number" label="Maintenance Id" />
+            </Form.Item>
+          </Col> */}
+          <Col className="gutter-row" span={8}>
+            <Form.Item name="type" rules={[{ required: true, message: "" }]}>
+            <FloatSelect allowClear={false} label="Type">
+                {maintenanceTypes?.map(type => (
+                    <Select.Option key={type} value={type}>
+                    {type}
+                    </Select.Option>
+                ))}
+              </FloatSelect>
             </Form.Item>
           </Col>
           <Col className="gutter-row" span={16}>
@@ -98,6 +121,15 @@ const MaintenanceModal = ({
             <Form.Item
               label="Date"
               name="date"
+              rules={[{ required: true, message: "" }]}
+            >
+              <DatePicker onChange={() => document.getElementById("maintenanceMobileNumberInput").focus()} className="full-width" />
+            </Form.Item>
+          </Col>
+          <Col className="gutter-row" span={12}>
+            <Form.Item
+              label="Maintenance Date"
+              name="maintenanceDate"
               rules={[{ required: true, message: "" }]}
             >
               <DatePicker onChange={() => document.getElementById("maintenanceMobileNumberInput").focus()} className="full-width" />
@@ -123,11 +155,12 @@ const MaintenanceModal = ({
               <FloatInput type="text" label="Address" />
             </Form.Item>
           </Col>
-          <Col className="gutter-row" span={12}>
+          <Col className="gutter-row" span={24}>
             <Form.Item
               name="comment"
+              label="Comment"
             >
-              <FloatInput type="text" label="Comment" />
+              <TextArea placeholder="Comment goes here..."/>
             </Form.Item>
           </Col>
         </Row>

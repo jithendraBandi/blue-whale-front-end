@@ -19,13 +19,27 @@ code {
   background: rgb(128, 179, 204) !important;
 }
 .ant-table-row:nth-child(odd) {
-  background-color: #dac7ed;
+  /* background-color: #dac7ed; */
+  background-color: rgb(236, 233, 233);
 }
 
 .ant-table-row:nth-child(even) {
-  background-color: #efdac5;
+  /* background-color: #efdac5; */
 }
 
+.ant-modal .ant-modal-content {
+  padding: 0px;
+}
+div.ant-modal-header {
+  background-color: lightblue !important;
+  padding: 10px !important;
+}
+div.ant-modal-body {
+  padding: 10px !important;
+}
+
+
+/* Common Generic Styles */
 .full-width {
   width: 100%;
 }

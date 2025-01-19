@@ -13,6 +13,7 @@ export const headerTabViews = {
   CATEGORIES: "categoryView",
   TRANSACTIONS: "transactionsView",
   MAINTENANCE: "maintainenceView",
+  CONTACTS: "contactsView",
 };
 
 export const tradeTypes = {
@@ -41,3 +42,4 @@ export const errorNotification = (message) => {
     duration: 3,
   });
 };
+export const maintenanceTypes = ["SELL", "RENT", "OTHERS"];

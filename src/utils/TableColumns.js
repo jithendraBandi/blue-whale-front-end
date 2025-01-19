@@ -27,6 +27,46 @@ export const categoriesTableColumns = ({ categoryEdit, deleteCategory }) => [
     ),
   },
 ];
+export const contactTableColumns = ({ contactEdit, deleteContact }) => [
+  {
+    title: "S.No",
+    render: (_, record, index) => index + 1,
+  },
+  {
+    title: "Name",
+    dataIndex: "name",
+    key: "name",
+  },
+  {
+    title: "Mobile Number",
+    dataIndex: "mobileNumber",
+    key: "mobileNumber",
+  },
+  {
+    title: "Address",
+    dataIndex: "address",
+    key: "address",
+  },
+  {
+    title: "Notes",
+    dataIndex: "notes",
+    key: "notes",
+  },
+  {
+    title: "Action",
+    key: "action",
+    render: (_, record) => (
+      <Space size="middle">
+        <Button onClick={() => contactEdit(record)}>
+          <EditOutlined style={{ color: "blue" }} />
+        </Button>
+        <Button onClick={() => deleteContact(record)}>
+          <DeleteOutlined className="red-color" />
+        </Button>
+      </Space>
+    ),
+  },
+];
 
 export const itemsTableColumns = ({ itemEdit, getCategoryFilterList, deleteItem }) => [
   {
@@ -185,7 +225,7 @@ if (tradeType === tradeTypes.USAGE) {
 return allColumns;
 };
 
-export const maintenanceTableColumns = ({maintenanceEdit, deleteMaintenance}) => [
+export const maintenanceTableColumns = ({maintenanceEdit, deleteMaintenance, getMaintenanceFilterList}) => [
   {
     title: "S.No",
     render: (_, record, index) => index + 1,
@@ -196,10 +236,23 @@ export const maintenanceTableColumns = ({maintenanceEdit, deleteMaintenance}) =>
     key: "name",
   },
   {
+    title: "Type",
+    dataIndex: "type",
+    key: "type",
+    filters: getMaintenanceFilterList(),
+    onFilter: (value, record) => record?.type === value,
+  },
+  {
     title: "Date",
     dataIndex: "date",
     key: "date",
     sorter: (a, b) => a?.date?.localeCompare(b?.date),
+  },
+  {
+    title: "Maintenance Date",
+    dataIndex: "maintenanceDate",
+    key: "maintenanceDate",
+    sorter: (a, b) => a?.maintenanceDate?.localeCompare(b?.maintenanceDate),
   },
   {
     title: "Mobile Number",

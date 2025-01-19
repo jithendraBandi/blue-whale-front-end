@@ -25,7 +25,7 @@ const FloatSelect = (props) => {
       onBlur={() => setFocus(false)}
       onFocus={() => setFocus(true)}
     >
-      <Select rules={rules} {...props} allowClear>
+      <Select allowClear rules={rules} {...props}>
         {children}
       </Select>
       <label className={labelClass}>

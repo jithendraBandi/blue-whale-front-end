@@ -5,10 +5,11 @@ import { headerTabViews } from "../utils/constants";
 import Items from "./HeaderTabViews/Items";
 import Categories from "./HeaderTabViews/Categories";
 import Transactions from "./HeaderTabViews/Transactions";
-import { GET_ALL_ITEMS, GET_ALL_MAINTENANCE, GET_ALL_TRANSACTIONS, GET_CATEGORIES } from "../utils/apis";
+import { GET_ALL_CONTACTS, GET_ALL_ITEMS, GET_ALL_MAINTENANCE, GET_ALL_TRANSACTIONS, GET_CATEGORIES } from "../utils/apis";
 import axios from "axios";
 import Maintencance from "./HeaderTabViews/Maintencance";
 import Logo from "../images/logo.png";
+import Contacts from "./HeaderTabViews/Contacts";
 
 const BlueWhale = () => {
   const [activeTabView, setActiveTabView] = useState(headerTabViews.ITEMS);
@@ -17,12 +18,14 @@ const BlueWhale = () => {
   const [categoriesList, setCategoriesList] = useState([]);
   const [transactionsList, setTransactionsList] = useState([]);  
   const [maintenanceList, setMaintenanceList] = useState([]);
+  const [contactList, setContactList] = useState([]);
 
   useEffect(() => {
     getItemsList();
     getCategoriesList();
     getTransactionsList();
     getMaintenanceList();
+    getContactList();
   }, []);
 
   const getItemsList = () => {
@@ -56,6 +59,13 @@ const BlueWhale = () => {
         })
         .catch(error => {});
   }
+  const getContactList = () => {
+    axios.get(GET_ALL_CONTACTS)
+        .then(response => {
+            setContactList(response?.data?.data);
+        })
+        .catch(error => {});
+  }
 
 
   return (
@@ -70,16 +80,19 @@ const BlueWhale = () => {
           value={activeTabView}
         >
           <Radio.Button value={headerTabViews.ITEMS}>
-            Items {<span className="total-number-display">{itemsList.length}</span>}
+            Items {<span className="total-number-display">{itemsList?.length}</span>}
             </Radio.Button>
           <Radio.Button value={headerTabViews.CATEGORIES}>
-            Categories {<span className="total-number-display">{categoriesList.length}</span>}
+            Categories {<span className="total-number-display">{categoriesList?.length}</span>}
           </Radio.Button>
           <Radio.Button value={headerTabViews.TRANSACTIONS}>
-            Transactions {<span className="total-number-display">{transactionsList.length}</span>}
+            Transactions {<span className="total-number-display">{transactionsList?.length}</span>}
           </Radio.Button>
           <Radio.Button value={headerTabViews.MAINTENANCE}>
-            Maintenance {<span className="total-number-display">{maintenanceList.length}</span>}
+            Maintenance {<span className="total-number-display">{maintenanceList?.length}</span>}
+          </Radio.Button>
+          <Radio.Button value={headerTabViews.CONTACTS}>
+            Contacts {<span className="total-number-display">{contactList?.length}</span>}
           </Radio.Button>
         </Radio.Group>
       </div>
@@ -106,6 +119,7 @@ const BlueWhale = () => {
           getTransactionsList={getTransactionsList}
           getItemsList={getItemsList}
           itemsList={itemsList}
+          contactList={contactList}
         />
       )}
       
@@ -114,6 +128,13 @@ const BlueWhale = () => {
           maintenanceList={maintenanceList}
           getMaintenanceList={getMaintenanceList}
           itemsList={itemsList}
+        />
+      )}
+
+      {activeTabView === headerTabViews.CONTACTS && (
+        <Contacts
+          contactList={contactList}
+          getContactList={getContactList}
         />
       )}
     </>
