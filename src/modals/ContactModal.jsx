@@ -56,6 +56,7 @@ const ContactModal = ({
       open={contactModal}
       onCancel={handleCancel}
       footer={null}
+      maskClosable={false}
     >
       <Form name="contactForm" form={contactForm} onFinish={onFinish}>
       <Row style={{marginTop:"20px"}} gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>

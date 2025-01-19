@@ -44,6 +44,7 @@ const InvoiceViewModal = ({
       onCancel={handleCancel}
       footer={null}
       closable={false}
+      maskClosable={false}
       width={800}
     >
       <div ref={invoiceRef} className="invoice-data-view">

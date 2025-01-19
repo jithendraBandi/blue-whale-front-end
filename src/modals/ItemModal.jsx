@@ -59,6 +59,7 @@ const ItemModal = ({
       open={itemModal}
       onCancel={handleCancel}
       footer={null}
+      maskClosable={false}
     >
       <Form name="itemForm" form={itemForm} onFinish={onFinish}>
         <Row

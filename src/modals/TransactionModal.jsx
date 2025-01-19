@@ -293,6 +293,7 @@ const TransactionModal = ({
           scrollbarWidth: "none",
         },
       }}
+      maskClosable={false}
       centered
       footer={null}
     >

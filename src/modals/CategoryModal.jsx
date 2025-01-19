@@ -54,6 +54,7 @@ const CategoryModal = ({
       open={categoryModal}
       onCancel={handleCancel}
       footer={null}
+      maskClosable={false}
     >
       <Form name="categoryForm" form={categoryForm} onFinish={onFinish}>
       <Row style={{marginTop:"20px"}} gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>

@@ -8,6 +8,7 @@ import axios from "axios";
 import { DELETE_MAINTENANCE } from "../../utils/apis";
 import { errorNotification, maintenanceTypes, successNotification } from "../../utils/constants";
 import { maintenanceTableColumns } from "../../utils/TableColumns";
+import { antdTableScrollYaxis } from "../../utils/styles";
 
 const Maintencance = ({ maintenanceList, getMaintenanceList, itemsList, }) => {
   const [maintenanceModal, setMaintenanceModal] = useState(false);
@@ -75,6 +76,7 @@ const Maintencance = ({ maintenanceList, getMaintenanceList, itemsList, }) => {
           getMaintenanceFilterList,
         })}
         dataSource={filteredMaintenanceList()}
+        scroll={antdTableScrollYaxis}
         rowKey="id"
         pagination={false}
       />

@@ -88,6 +88,7 @@ const MaintenanceModal = ({
       onCancel={handleCancel}
       footer={null}
       width={modalMediumWidth}
+      maskClosable={false}
     >
       <Form name="maintenanceForm" form={maintenanceForm} onFinish={onFinish}>
         <Row
