@@ -28,6 +28,8 @@ const Transactions = ({
   transactionsList,
   itemsList,
   contactList,
+  getContactList,
+  categoriesList,
 }) => {
   const [transactionModal, setTransactionModal] = useState(false);
   const [transactionRecord, setTransactionRecord] = useState(null);
@@ -164,6 +166,8 @@ const Transactions = ({
           activeTab={tradeType}
           setActiveTab={setTradeType}
           contactList={contactList}
+          getContactList={getContactList}
+          categoriesList={categoriesList}
         />
       )}
       {invoiceModal && (

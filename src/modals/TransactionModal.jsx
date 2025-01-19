@@ -18,6 +18,8 @@ import {
   ACTION_SUCCESSFULL_MESSAGE,
   UNEXPECTED_ERROR_MESSAGE,
 } from "../utils/stringConstants";
+import ContactModal from "./ContactModal";
+import ItemModal from "./ItemModal";
 
 const TransactionModal = ({
   transactionModal,
@@ -30,6 +32,8 @@ const TransactionModal = ({
   activeTab,
   setActiveTab,
   contactList,
+  getContactList,
+  categoriesList,
 }) => {
   const [transactionForm] = Form.useForm();
   const [transactionItemsList, setTransactionItemsList] = useState();
@@ -37,6 +41,8 @@ const TransactionModal = ({
   const [selectedProducts, setSelectedProducts] = useState({});
   const [uniqueCount, setUniqueCount] = useState();
   const [selectedContactId, setSelectedContactId] =useState();
+  const [contactModal, setContactModal] = useState(false);
+  const [itemModal, setItemModal] = useState(false);
 
   // useEffect(() => {
   //   transactionForm.setFieldValue("tradeType", activeTab);
@@ -253,6 +259,7 @@ const TransactionModal = ({
             {transactionRecord ? "Edit Transaction" : "Add Transaction"}
             {/* Add Transaction */}
           </span>
+          <div className="flex-row">
           <FloatSelect
             label="Select Contact"
             onChange={(contactId) => handleContactChange(contactId)}
@@ -265,6 +272,10 @@ const TransactionModal = ({
               </Select.Option>
             ))}
           </FloatSelect>
+          {/* <PlusOutlined style={{color:"blue", marginLeft:"10px", marginRight:"10px"}} onClick={() => setContactModal(true)} /> */}
+            <Button type="link" className="side-margins" onClick={() => setContactModal(true)}>Add Contact</Button>
+            <Button type="link" onClick={() => setItemModal(true)}>Add Item</Button>
+          </div>
           <Button type="primary" onClick={addTransactionItem}>
             <PlusOutlined />
           </Button>
@@ -384,6 +395,25 @@ const TransactionModal = ({
           handleCancel={handleCancel}
         />
       </Form>
+      {contactModal && (
+        <ContactModal
+          contactModal={contactModal}
+          setContactModal={setContactModal}
+          // contactRecord={contactRecord}
+          // setContactRecord={setContactRecord}
+          getContactList={getContactList}
+        />
+      )}
+      {itemModal && (
+        <ItemModal
+          itemModal={itemModal}
+          setItemModal={setItemModal}
+          // itemRecord={itemRecord}
+          // setItemRecord={setItemRecord}
+          getItemsList={getItemsList}
+          categoriesList={categoriesList}
+        />
+      )}
     </Modal>
   );
 };

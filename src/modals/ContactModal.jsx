@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import FormButtons from "../utils/FormButtons";
 import FloatInput from "../utils/FloatInput";
 import axios from "axios";
-import { SAVE_CATEGORY, SAVE_CONTACT } from "../utils/apis";
+import { SAVE_CONTACT } from "../utils/apis";
 import { errorNotification, successNotification } from "../utils/constants";
 import { ACTION_SUCCESSFULL_MESSAGE, UNEXPECTED_ERROR_MESSAGE } from "../utils/stringConstants";
 import TextArea from "antd/es/input/TextArea";

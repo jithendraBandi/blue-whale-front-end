@@ -120,6 +120,8 @@ const BlueWhale = () => {
           getItemsList={getItemsList}
           itemsList={itemsList}
           contactList={contactList}
+          getContactList={getContactList}
+          categoriesList={categoriesList}
         />
       )}
       
