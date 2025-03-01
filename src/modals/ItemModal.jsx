@@ -24,6 +24,7 @@ const ItemModal = ({
           id: itemRecord?.id,
           name: itemRecord?.name,
           price: itemRecord?.price,
+          purchasePrice: itemRecord?.purchasePrice,
           quantity: itemRecord?.quantity,
           company: itemRecord?.company,
           categoryId: itemRecord?.category?.name,
@@ -96,6 +97,11 @@ const ItemModal = ({
           </Col>
         </Row>
         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+          <Col className="gutter-row" span={12}>
+            <Form.Item name="purchasePrice" rules={[{ required: true, message: "" }]}>
+              <FloatInput type="number" label="Purchase Price (in Rs/-)" />
+            </Form.Item>
+          </Col>
           <Col className="gutter-row" span={12}>
             <Form.Item name="price" rules={[{ required: true, message: "" }]}>
               <FloatInput type="number" label="Price (in Rs/-)" />

@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined, FileImageOutlined } from "@ant-design/icons";
-import { Button, Space } from "antd";
+import { Button, Space, Tooltip } from "antd";
 import { quantityFilters, tradeTypes } from "./constants";
 
 export const categoriesTableColumns = ({ categoryEdit, deleteCategory }) => [
@@ -113,6 +113,11 @@ export const itemsTableColumns = ({ itemEdit, getCategoryFilterList, deleteItem 
     dataIndex: "price",
     key: "price",
     sorter: (a, b) => a?.price - b?.price,
+    render: (price, record) => (
+      <Tooltip title={record?.purchasePrice}>
+        {price}
+      </Tooltip>
+    ),
   },
   {
     title: "Action",
