@@ -93,7 +93,7 @@ const TransactionModal = ({
         tradeType: transactionRecord?.tradeType,
       });
     }
-  }, [transactionRecord, transactionForm, activeTab]);
+  }, [itemsList, transactionRecord, transactionForm, activeTab]);
 
   const confirmModal = (values) => {
     let amount = 0;
@@ -112,7 +112,7 @@ const TransactionModal = ({
       };
       transactionItemDetails.push(itemDetails);
       amount +=
-        parseInt(values?.[`cost_${itemIndex}`]) *
+        parseFloat(values?.[`cost_${itemIndex}`]) *
         parseInt(values?.[`quantity_${itemIndex}`]);
     });
 
@@ -283,7 +283,7 @@ const TransactionModal = ({
       }
       open={transactionModal}
       onCancel={handleCancel}
-      width={1000}
+      width={1200}
       closable={false}
       styles={{
         body: {

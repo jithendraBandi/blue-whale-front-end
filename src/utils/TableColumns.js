@@ -142,6 +142,7 @@ export const transactionTableColumns = ({
 }) => [
   {
     title: "S.No",
+    width: 80,
     render: (_, record, index) => index + 1,
   },
   {

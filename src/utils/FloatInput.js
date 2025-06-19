@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Input } from "antd";
 import "./index.css";
 import TextArea from "antd/es/input/TextArea";
@@ -9,7 +9,7 @@ const FloatInput = (props) => {
 
   if (!placeholder) placeholder = label;
 
-  const isOccupied = focus || (value && value.length !== 0);
+  const isOccupied = focus || value === "0" || value === 0 || (value && value.length !== 0);
 
   const labelClass = isOccupied ? "label as-label" : "label as-placeholder";
 

@@ -1,6 +1,6 @@
-import { Button, Col, Modal, Row } from "antd";
+import { Button, Modal } from "antd";
 import html2canvas from "html2canvas";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import Logo from "../images/logo.png";
 import { ShopOutlined, WhatsAppOutlined } from "@ant-design/icons";
 

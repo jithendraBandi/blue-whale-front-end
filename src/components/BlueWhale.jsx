@@ -26,16 +26,8 @@ const BlueWhale = () => {
     getTransactionsList();
     getMaintenanceList();
     getContactList();
-    testDeployInstance();
   }, []);
 
-  const testDeployInstance = () => {
-    axios.get("https://checkershub.space/deployment/api/test")
-        .then(response => {
-            console.log('response', response);
-        })
-        .catch(error => {});
-  }
   const getItemsList = () => {
     axios.get(GET_ALL_ITEMS)
         .then(response => {

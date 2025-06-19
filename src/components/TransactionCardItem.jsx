@@ -18,14 +18,14 @@ const TransactionCardItem = ({
   const getItemTotal = () => {
     const quantity = transactionForm.getFieldValue(`quantity_${index}`);
     const cost = transactionForm.getFieldValue(`cost_${index}`);
-    const selectedItemTotal = parseInt(quantity) * parseInt(cost);
+    const selectedItemTotal = parseInt(quantity) * parseFloat(cost);
     setItemTotal({
       ...itemTotal,
       [index]: selectedItemTotal ? selectedItemTotal : null,
     });
   };
 
-  const selectedItemQuantity = itemsList?.find(item => item?.id === parseInt(transactionForm.getFieldValue(`itemValues_${index}`)?.split("_")?.[0]))?.quantity;
+  // const selectedItemQuantity = itemsList?.find(item => item?.id === parseInt(transactionForm.getFieldValue(`itemValues_${index}`)?.split("_")?.[0]))?.quantity;
   return (
     <div key={index} className="transaction-modal-item-details-container">
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
@@ -52,7 +52,7 @@ const TransactionCardItem = ({
                     selectedProducts?.includes(item?.id?.toString())
                   ))}
                 >
-                  (<span className={parseInt(item?.quantity) > 0 ? "green-color" : "red-color"}>{item?.quantity}</span>) {item?.category?.name} - {item?.name} (Rs.{item?.price}/-)
+                  (<span className={parseInt(item?.quantity) > 0 ? "green-color" : "red-color"}>{item?.quantity}</span>) {item?.category?.name} - {item?.name}: {item?.company} (Rs.{item?.price}/-)
                 </Select.Option>
               ))}
             </FloatSelect>
@@ -90,7 +90,7 @@ const TransactionCardItem = ({
           >
             <FloatInput
               onChange={getItemTotal}
-              type="number"
+              type="float"
               label="Cost (per unit)"
             />
           </Form.Item>
