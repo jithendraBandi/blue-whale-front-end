@@ -42,4 +42,4 @@ export const errorNotification = (message) => {
     duration: 3,
   });
 };
-export const maintenanceTypes = ["SELL", "RENT", "OTHERS"];
+export const maintenanceTypes = ["SELL", "RENT", "EMI", "SERVICE", "OTHERS"];

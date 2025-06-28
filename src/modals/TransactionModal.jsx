@@ -268,7 +268,7 @@ const TransactionModal = ({
           >
             {contactList?.map(contact => (
               <Select.Option key={contact?.id} value={contact?.id}>
-                {contact?.name}
+                {contact?.name} ({contact?.address})
               </Select.Option>
             ))}
           </FloatSelect>
