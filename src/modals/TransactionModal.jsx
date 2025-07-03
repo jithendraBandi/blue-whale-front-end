@@ -219,6 +219,7 @@ const TransactionModal = ({
   const getItemsCard = (index) => {
     return (
       <TransactionCardItem
+        key={index}
         activeTab={activeTab}
         itemTotal={itemTotal}
         setItemTotal={setItemTotal}
@@ -322,6 +323,7 @@ const TransactionModal = ({
               label="Date"
               name="date"
               rules={[{ required: true, message: "" }]}
+              initialValue={dayjs()}
             >
               <DatePicker
                 onChange={() =>
