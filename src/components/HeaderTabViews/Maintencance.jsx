@@ -3,16 +3,25 @@ import FloatInput from "../../utils/FloatInput";
 import PlusOutlinedButton from "../../utils/PlusOutlinedButton";
 import { Modal, Table } from "antd";
 import MaintenanceModal from "../../modals/MaintenanceModal";
-import { ACTION_SUCCESSFULL_MESSAGE, UNDONE_WARNING_MESSAGE, UNEXPECTED_ERROR_MESSAGE } from "../../utils/stringConstants";
+import {
+  ACTION_SUCCESSFULL_MESSAGE,
+  UNDONE_WARNING_MESSAGE,
+  UNEXPECTED_ERROR_MESSAGE,
+} from "../../utils/stringConstants";
 import axios from "axios";
 import { DELETE_MAINTENANCE } from "../../utils/apis";
-import { errorNotification, maintenanceTypes, successNotification } from "../../utils/constants";
+import {
+  errorNotification,
+  maintenanceTypes,
+  successNotification,
+} from "../../utils/constants";
 import { maintenanceTableColumns } from "../../utils/TableColumns";
 import { antdTableScrollYaxis } from "../../utils/styles";
 
-const Maintencance = ({ maintenanceList, getMaintenanceList, itemsList, }) => {
+const Maintencance = ({ maintenanceList, getMaintenanceList, itemsList }) => {
   const [maintenanceModal, setMaintenanceModal] = useState(false);
   const [maintenanceDateSearch, setMaintenanceDateSearch] = useState("");
+  const [maintenanceNameSearch, setMaintenanceNameSearch] = useState("");
   const [maintenanceRecord, setMaintenanceRecord] = useState(null);
 
   const maintenanceEdit = (record) => {
@@ -52,21 +61,34 @@ const Maintencance = ({ maintenanceList, getMaintenanceList, itemsList, }) => {
   };
 
   const filteredMaintenanceList = () =>
-    maintenanceList?.filter((maintenance) =>
-      maintenance?.maintenanceDate
-        ?.toLowerCase()
-        ?.includes(maintenanceDateSearch?.toLowerCase())
+    maintenanceList?.filter(
+      (maintenance) =>
+        maintenance?.maintenanceDate
+          ?.toLowerCase()
+          ?.includes(maintenanceDateSearch?.toLowerCase()) &&
+        maintenance?.name
+          ?.toLowerCase()
+          ?.includes(maintenanceNameSearch?.toLowerCase())
     );
 
   return (
     <>
       <div className="space-between side-margins">
-        <FloatInput
-          onChange={(event) => setMaintenanceDateSearch(event.target.value)}
-          value={maintenanceDateSearch}
-          type="search"
-          label="Search Date..."
-        />
+        <div className="space-between">
+          <FloatInput
+            onChange={(event) => setMaintenanceNameSearch(event.target.value)}
+            value={maintenanceNameSearch}
+            type="search"
+            label="Search Name..."
+          />
+          <FloatInput
+            onChange={(event) => setMaintenanceDateSearch(event.target.value)}
+            value={maintenanceDateSearch}
+            type="search"
+            label="Search Date..."
+            className="side-margins"
+          />
+        </div>
         <PlusOutlinedButton setModal={setMaintenanceModal} />
       </div>
       <Table
